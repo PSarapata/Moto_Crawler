@@ -40,10 +40,10 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  constructor initializer
     def __init__(self):
-        #  init postcodes content
+        #  init car content
         content = ''
 
-        #  read postcodes file
+        #  read cars file
         with open('./input/input.json', 'r') as f:
             for line in f.read():
                 content += line
@@ -95,6 +95,7 @@ class SprzedajemyScraper(scrapy.Spider):
                 'model': model,
                 'filename': filename,
                 'count': count}, callback=self.parse_listing)
+
         # try:
         #     #  handle pagination
         #     self.current_offset += 30
@@ -111,13 +112,14 @@ class SprzedajemyScraper(scrapy.Spider):
         # next_page = self.base_url + brand.lower() + '/' + model.lower + '?' + str(self.params['offset'])
 
         #     #  handle pagination
-        #     if self.current_offset < total_pages:
+        #     if self.current_offset < total_cars:
         #         #  print debug info
-        #         print('\n\n %s | %s \n\n' % (int(self.current_offset), total_pages))
+        #         print('\n\n %s | %s \n\n' % (int(self.current_offset), total_cars))
         #
-        #         #  crawl next pages
+        #         #  crawl more cars
         #         yield res.follow(url=next_page, headers=self.headers, meta={
-        #             'postcode': postcode,
+        #             'brand': brand,
+        #             'model': model,
         #             'filename': filename,
         #             'count': count}, callback=self.parse_links)
         # except:
@@ -138,6 +140,11 @@ class SprzedajemyScraper(scrapy.Spider):
         #         content += line
         #
         # res = Selector(text=content)
+
+
+
+        #  print extraction in terminal - for debugging
+        #  print(json.dumps(features, indent=4))
 
         #  extract features
         try:
@@ -164,7 +171,7 @@ class SprzedajemyScraper(scrapy.Spider):
 
                 'image_urls': res.css('img.js-gallerySlide::attr(src)').getall(),
 
-                # GWIAZDKA OZNACZA, ŻE CHCEMY TEŻ DZIECI TEGO ELEMENTU!!!!!!!! <-- WAŻNE!!!!!
+                # Star means we also want the element's children.
 
                 'full_description': res.css('div.offerDescription').css('span *::text').get(),
 
@@ -209,9 +216,6 @@ class SprzedajemyScraper(scrapy.Spider):
 
         except:
             print("Car Extraction Failed")
-
-        #  print extraction in terminal - for debugging
-        #  print(json.dumps(features, indent=4))
 
         # write data to JSONL file
         with open(filename, 'a') as f:
