@@ -58,7 +58,7 @@ class SprzedajemyScraper(scrapy.Spider):
     def start_requests(self):
 
         #  init filename
-        filename = './output/Moto_Crawler_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
+        filename = './output/Moto_Crawler_Sprzedajemy_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
         #  brands count
         count = 1
@@ -74,7 +74,6 @@ class SprzedajemyScraper(scrapy.Spider):
                 'count': count
             }, callback=self.parse_links)
             count += 1
-            break
 
     #  parse car links
     def parse_links(self, res):
@@ -132,21 +131,6 @@ class SprzedajemyScraper(scrapy.Spider):
         model = res.meta.get('model')
         filename = res.meta.get('filename')
 
-         # debug data extraction
-        # content = ''
-        #
-        # with open('res.html', 'r') as f:
-        #     for line in f.read():
-        #         content += line
-        #
-        # res = Selector(text=content)
-
-
-
-        #  print extraction in terminal - for debugging
-        #  print(json.dumps(features, indent=4))
-
-        #  extract features
         try:
             features = {
                 'id': res.css('ul.offerAdditionalInfo').css('a.locationName::attr(data-id)').get(),

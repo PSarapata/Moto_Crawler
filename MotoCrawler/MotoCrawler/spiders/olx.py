@@ -18,8 +18,9 @@ class OlxScraper(scrapy.Spider):
     # search query parameters - specify additional info of interest
     params = {
         "page": 1,
-        "year_from": "[filter_float_year%3Afrom]=1995",
-        "year_to": "[filter_float_year%3Ato]=1999",
+        "price_to": "search[filter_float_price%3Ato]=20000",
+        "year_from": "search[filter_float_year%3Afrom]=1995",
+        "year_to": "search[filter_float_year%3Ato]=1999",
     }
 
     #  headers
@@ -61,7 +62,7 @@ class OlxScraper(scrapy.Spider):
     def start_requests(self):
 
         #  init filename
-        filename = './output/Moto_Crawler_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
+        filename = './output/Moto_Crawler_OLX_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
         #  brands count
         count = 1
@@ -70,6 +71,9 @@ class OlxScraper(scrapy.Spider):
         for brand, model in self.cars:
             self.current_page = 1
             next_car = self.base_url + '/' + brand.lower() + '/' + model.lower() + '/'
+            if model == "Eclipse":
+                next_car += '?' + self.params["price_to"] + '&' + self.params["year_from"] + '&' \
+                            + self.params["year_to"]
             yield scrapy.Request(url=next_car, headers=self.headers, meta={
                 'brand': brand,
                 'model': model,
@@ -109,7 +113,7 @@ class OlxScraper(scrapy.Spider):
 
         features = {}
         if "olx.pl" in res.url:
-            #  extract features
+            #  extract features for olx offer
             try:
                 features = {
                     'id': res.css('div.clm-samurai::attr(data-item)').get(),
@@ -124,7 +128,8 @@ class OlxScraper(scrapy.Spider):
 
                     # Star means we also want the element's children.
 
-                    'full_description': res.css('div#textContent *::text').get().strip(),
+                    'full_description': '\n'.join([line.strip().replace('\r', '') for line in res.css(
+                        'div#textContent *::text').getall()])
 
                 }
 
@@ -133,63 +138,141 @@ class OlxScraper(scrapy.Spider):
 
             # extract script for features
             script = ''.join([script for script in res.css('script').getall() if
-                              'GPT.targeting =' in script])
-            feature_dict = script.split('GPT.targeting = {')[1][0:300]
+                              "GPT.targeting =" in script])
+            feature_dict = script.split('GPT.targeting = {')[1][0:1000]
 
             # try to extract features from script or else leave empty
             try:
-                features['title'] = feature_dict.split('"ad_title:"')[1].split(',')[0],
+                features['title'] = feature_dict.split('"ad_title"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['title'] = ''
 
             try:
-                features['city'] = feature_dict.split('"city:"')[1].split(',')[0],
+                features['city'] = feature_dict.split('"city"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['city'] = ''
 
             try:
-                features['manufacturing_year'] = feature_dict.split('"year:"')[1].split(',')[0],
+                features['manufacturing_year'] = feature_dict.split('"year"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['manufacturing_year'] = ''
 
             try:
-                features['mileage'] = feature_dict.split('"milage:"')[1].split(',')[0],
+                features['mileage'] = feature_dict.split('"milage"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['mileage'] = ''
 
             try:
-                features['region'] = feature_dict.split('"region:"')[1].split(',')[0],
+                features['region'] = feature_dict.split('"region"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['region'] = ''
 
             try:
-                features['gearbox'] = feature_dict.split('"transmission:"')[1].split(',')[0],
+                features['gearbox'] = feature_dict.split('"transmission"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['gearbox'] = ''
 
             try:
-                features['enginesize'] = feature_dict.split('"enginesize:"')[1].split(',')[0],
+                features['enginesize'] = feature_dict.split('"enginesize"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['enginesize'] = ''
 
             try:
-                features['subregion'] = feature_dict.split('"subregion":')[1].split(',')[0],
+                features['subregion'] = feature_dict.split('"subregion"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['subregion'] = ''
 
             try:
-                features['price'] = feature_dict.split('"ad_price:"')[1].split(',')[0],
+                features['price'] = feature_dict.split('"ad_price"')[1].split(':')[1].split(',')[0].split('"')[1],
             except:
                 features['price'] = ''
 
             #  print extraction in terminal - for debugging
             #  print(json.dumps(features, indent=4))
+            # write data to JSON file
+            with open(filename, 'a') as f:
+                f.write(json.dumps(features, indent=4) + '\n')
+
+        elif "otomoto.pl" in res.url:
+            #  extract features for otomoto offer
+            try:
+                features = {
+                    'id': res.css('span#ad_id::text').get(),
+
+                    'url': res.url,
+
+                    'brand': brand,
+
+                    'model': model,
+
+                    'image_urls': [image for image in res.css('img.bigImage::attr(data-lazy)').getall()],
+
+                    # Star means we also want the element's children.
+
+                    'full_description': '\n'.join([line.strip().replace('\r', '') for line in res.css(
+                        'div.offer-description__description *::text').getall()])
+
+                }
+            except:
+                print('Failed to extract otomoto features')
+
+            # extract script for features
+            script = ''.join([script for script in res.css('script').getall() if
+                              "GPT.targeting =" in script])
+            feature_dict = script.split('GPT.targeting = {')[1][0:1000]
+
+            # try to extract features from script or else leave empty
+            try:
+                features['title'] = feature_dict.split('"ad_title"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['title'] = ''
+
+            try:
+                features['city'] = feature_dict.split('"city"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['city'] = ''
+
+            try:
+                features['manufacturing_year'] = feature_dict.split('"year"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['manufacturing_year'] = ''
+
+            try:
+                features['mileage'] = feature_dict.split('"mileage"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['mileage'] = ''
+
+            try:
+                features['region'] = feature_dict.split('"region"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['region'] = ''
+
+            try:
+                features['gearbox'] = feature_dict.split('"transmission"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['gearbox'] = ''
+
+            try:
+                features['enginesize'] = feature_dict.split('"enginesize"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['enginesize'] = ''
+
+            try:
+                features['subregion'] = feature_dict.split('"subregion"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['subregion'] = ''
+
+            try:
+                features['price'] = feature_dict.split('"ad_price"')[1].split(':')[1].split(',')[0].split('"')[1],
+            except:
+                features['price'] = ''
 
             # write data to JSON file
             with open(filename, 'a') as f:
                 f.write(json.dumps(features, indent=4) + '\n')
+
         else:
-            print("Otomoto offer, extraction code to be written.")
+            print(Exception("Something has gone wrong."))
 
 
 #  main driver
