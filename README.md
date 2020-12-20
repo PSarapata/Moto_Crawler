@@ -11,3 +11,7 @@ website for offers. It then creates an output .json file with each car details.
 @update:
 ---------------
 Second Spider crawls another website, which consists of own and external offers. There is a small bug with extracting two feature keys. Will continue working on this after REST API workshop.
+
+20.12.2020 21:00
+---------------
+Current functionality: Start each spider manually from console. Spiders scrape through 4 popular car selling websites based on input json file, return ready-to-process dictionary items in a json output file. I plan to add one more spider, add pagination for all, then move on to handle PostgreSQL database.
