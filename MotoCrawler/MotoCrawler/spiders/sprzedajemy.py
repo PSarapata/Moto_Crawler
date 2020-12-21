@@ -22,7 +22,8 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0"
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "referer": base_url
     }
 
     #  custom download settings
@@ -95,34 +96,32 @@ class SprzedajemyScraper(scrapy.Spider):
                 'filename': filename,
                 'count': count}, callback=self.parse_listing)
 
-        # try:
-        #     #  handle pagination
-        #     self.current_offset += 30
-        #     try:
-        #         total_pages = [int(page.split()[-1]) for page in res.css('ul.pagination-tabs').css('a::attr('
-        #                                                                                            'title)').getall()
-        #                        if page.split()[-1].isdigit]
-        #     except:
-        #         total_pages = 1
-        #         print('Exception')
+        try:
+            #  handle pagination
+            self.current_offset += 30
+            try:
+                total_cars = int(res.css('div.cntItemCounter').css('strong::text').get().split('-')[1])
+            except:
+                total_cars = 1
+                print('Exception')
 
-        # create next page link
-        # self.params['offset'] = self.current_offset
-        # next_page = self.base_url + brand.lower() + '/' + model.lower + '?' + str(self.params['offset'])
+            # create next page link
+            self.params['offset'] = self.current_offset
+            next_page = self.base_url + brand.lower() + '/' + model.lower + '?offset=' + str(self.params['offset'])
 
-        #     #  handle pagination
-        #     if self.current_offset < total_cars:
-        #         #  print debug info
-        #         print('\n\n %s | %s \n\n' % (int(self.current_offset), total_cars))
-        #
-        #         #  crawl more cars
-        #         yield res.follow(url=next_page, headers=self.headers, meta={
-        #             'brand': brand,
-        #             'model': model,
-        #             'filename': filename,
-        #             'count': count}, callback=self.parse_links)
-        # except:
-        #     pass
+            #  handle pagination
+            if self.current_offset < total_cars:
+                #  print debug info
+                print('\n\n %s | %s \n\n' % (int(self.current_offset), total_cars))
+
+                #  crawl more cars
+                yield res.follow(url=next_page, headers=self.headers, meta={
+                    'brand': brand,
+                    'model': model,
+                    'filename': filename,
+                    'count': count}, callback=self.parse_links)
+        except:
+            pass
 
     #  parse car listings
     def parse_listing(self, res):

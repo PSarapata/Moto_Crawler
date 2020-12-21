@@ -105,6 +105,33 @@ class OlxScraper(scrapy.Spider):
             else:
                 continue
 
+        try:
+            #  handle pagination
+            self.current_page += 1
+            try:
+                total_pages = int(res.css('a[data-cy="page-link-last"]::attr(href)').get().split('page=')[1])
+            except:
+                total_pages = 1
+                print('Exception')
+
+            # create next page link
+            self.params['page'] = self.current_page
+            next_page = self.base_url + brand.lower() + '/' + model.lower + '/?page=' + str(self.params['page'])
+
+            #  handle pagination
+            if self.current_page <= total_pages:
+                #  print debug info
+                print('\n\n %s | %s \n\n' % (int(self.current_page), total_pages))
+
+                #  crawl more cars
+                yield res.follow(url=next_page, headers=self.headers, meta={
+                    'brand': brand,
+                    'model': model,
+                    'filename': filename,
+                    'count': count}, callback=self.parse_links)
+        except:
+            pass
+
     def parse_listing(self, res):
         # extract forwarded data
         brand = res.meta.get('brand')

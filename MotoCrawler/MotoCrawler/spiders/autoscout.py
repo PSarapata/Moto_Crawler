@@ -102,6 +102,33 @@ class AutoScoutScraper(scrapy.Spider):
                 'filename': filename,
                 'count': count}, callback=self.parse_listing)
 
+        try:
+            #  handle pagination
+            self.current_page += 1
+            try:
+                total_pages = int(res.css('div.cl-refine-search-btn-container').css('a::attr(href)').get().split(
+                    'size=')[1].split('&')[0])
+            except:
+                total_pages = 1
+                print('Exception')
+
+            # create next page link
+            self.params['page'] = self.current_page
+            next_page = self.base_url + brand.lower() + '/' + model.lower + '/?page=' + str(self.params['page'])
+
+            #  handle pagination
+            if self.current_page <= total_pages:
+                #  print debug info
+                print('\n\n %s | %s \n\n' % (int(self.current_page), total_pages))
+
+                #  crawl more cars
+                yield res.follow(url=next_page, headers=self.headers, meta={
+                    'brand': brand,
+                    'model': model,
+                    'filename': filename,
+                    'count': count}, callback=self.parse_links)
+        except:
+            pass
 
     #  parse car listings
     def parse_listing(self, res):
@@ -162,7 +189,7 @@ class AutoScoutScraper(scrapy.Spider):
                 features['gearbox'] = ''
 
             try:
-                features['engine_capacity'] = script.split('"gear"')[1].split(': ')[1].split(',')[0]
+                features['engine_capacity'] = script.split('"stccm"')[1].split(': ')[1].split(',')[0]
             except:
                 features['engine_capacity'] = ''
 
