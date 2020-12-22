@@ -2,24 +2,32 @@ import datetime
 import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
-from scrapy.selector import Selector
 
 
-# AutoScout24 scraper class
-class AutoScoutScraper(scrapy.Spider):
+# mobile_de Scraper scraper class
+class MobileDeScraper(scrapy.Spider):
     #  spider name
-    name = 'autoscout'
+    name = 'mobile_de'
 
     #  base URL
-    base_url = 'https://www.autoscout24.pl'
+    base_url = 'https://www.mobile.de/pl/'
 
     # search query parameters - specify additional info of interest
     params = {
-        "page": 1,
-        "price_to": "priceto=3000",
-        "year_from": "fregfrom=1995",
-        "year_to": "fregto=2000",
+        "vhc": "car",
+        "pgn": "1",
+        "pgs": "10",
+        "srt": "price",
+        "sro": "asc",
+        "ms1": "17700_9_",
+        "prx": "3000",
     }
+
+    #  query string to pass parameters into URL
+    mconfig = []
+    for k, v in params.items():
+        mconfig.append(str(k) + ':' + str(v))
+    query_str = ','.join(mconfig)
 
     #  headers
     headers = {
@@ -60,7 +68,7 @@ class AutoScoutScraper(scrapy.Spider):
     def start_requests(self):
 
         #  init filename
-        filename = './output/Moto_Crawler_AutoScout_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
+        filename = './output/Moto_Crawler_MobileDe_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
         #  brands count
         count = 1
@@ -68,10 +76,7 @@ class AutoScoutScraper(scrapy.Spider):
         #  loop over cars (brands/models)
         for brand, model in self.cars:
             self.current_page = 1
-            next_car = self.base_url + '/lst/' + brand.lower() + '/' + model.lower()
-            if model == "Eclipse":
-                next_car += '?page=' + str(self.params["page"]) + '&' + self.params["price_to"] + '&' \
-                            + self.params["year_from"] + '&' + self.params["year_to"]
+            next_car = self.base_url + 'samochod/' + brand.lower() + '-' + model.lower() + '/' + self.query_str
             yield scrapy.Request(url=next_car, headers=self.headers, meta={
                 'brand': brand,
                 'model': model,
@@ -92,9 +97,9 @@ class AutoScoutScraper(scrapy.Spider):
         print('\n\nCAR %s: %s out of %s cars' % (brand, count, len(self.cars)))
 
         #  loop over car cards
-        for card in res.css('div.cldt-summary-titles'):
-            listing = card.css('a::attr(href)').get()
-            yield res.follow(url=listing, headers=self.headers, meta={
+        for card in res.css('div.result-list-section').css('article.list-entry'):
+            listing = card.css('a.vehicle-data::attr(href)').get()
+            yield res.follow(url=('https://www.mobile.de' + listing), headers=self.headers, meta={
                 'brand': brand,
                 'model': model,
                 'filename': filename,
@@ -104,15 +109,14 @@ class AutoScoutScraper(scrapy.Spider):
             #  handle pagination
             self.current_page += 1
             try:
-                total_pages = int(res.css('div.cl-refine-search-btn-container').css('a::attr(href)').get().split(
-                    'size=')[1].split('&')[0])
+                total_pages = int(res.css('span.pagination-page-numbers').css('a::text').getall()[-1])
             except:
                 total_pages = 1
                 print('Exception')
 
             # create next page link
-            self.params['page'] = self.current_page
-            next_page = self.base_url + brand.lower() + '/' + model.lower + '/?page=' + str(self.params['page'])
+            self.params['pgn'] = str(self.current_page)
+            next_page = self.base_url + brand.lower() + '/' + model.lower + '/' + self.query_str
 
             #  handle pagination
             if self.current_page <= total_pages:
@@ -137,7 +141,7 @@ class AutoScoutScraper(scrapy.Spider):
 
         try:
             features = {
-                'id': res.css('a::attr(data-classified-guid)').get(),
+                'id': res.url.split('/')[-1].split('.html')[0],
 
                 'url': res.url,
 
@@ -145,51 +149,64 @@ class AutoScoutScraper(scrapy.Spider):
 
                 'model': model,
 
-                'title': res.css('h2.as24-pictures__picture-title::text').get(),
+                'title': res.css('h1.g-col-8::text').get(),
 
-                'city': res.css('div.cldt-stage-vendor-text').css('span.sc-font-bold::text').get(),
+                'city': res.css('div.g-col-m-6').css('span::text').get(),
 
-                'price': res.css('div.cldt-price').css('h2::text').get().strip(),
+                'price': res.css('span.netto-price::text').get(),
 
-                'contact_seller': res.css('div.cldt-vendor-phones').css('a::attr(href)').get(),
-
-                'image_urls': [res.css('div.gallery-picture').css('img::attr(src)').get()] + ([Selector(
-                    text=img).css('img::attr(data-src)').get() for img in res.css('div.gallery-picture').getall()][1:]),
-
-
-                'feature_list': list(set(['<li>' + Selector(text=li).css('span.cldt-stage-highlight::text').get() +
-                                          '</li>' for li in res.css('div.cldt-stage-highlights').css(
-                        'span.cldt-stage-highlight').getall()])),
+                'image_urls': res.css('div.js-gallery-img-wrapper').css('div.gallery-bg::attr(data-src)').getall(),
 
             }
 
             # attempt to extract car attributes
-            script = res.css('s24-ad-targeting::text').get()
+            script = res.css('div.attributes-box').css(
+                    'span.g-col-6::text').getall()
 
             try:
-                features['manufacturing_year'] = script.split('"styea"')[1].split(': ')[1].split(',')[0]
+                features['manufacturing_year'] = script[(script.index('Pierwsza rejestracja') + 1)]
             except:
                 features['manufacturing_year'] = ''
 
             try:
-                features['power'] = script.split('"sthp"')[1].split(': ')[1].split(',')[0]
+                features['power'] = script[(script.index('Moc') + 1)]
             except:
                 features['power'] = ''
 
             try:
-                features['mileage'] = script.split('"stmil"')[1].split(': ')[1].split(',')[0]
+                features['mileage'] = script[(script.index('Przebieg') + 1)]
             except:
                 features['mileage'] = ''
 
             try:
-                features['gearbox'] = script.split('"gear"')[1].split(': ')[1].split(',')[0]
+                features['gearbox'] = script[(script.index('Skrzynia biegów') + 1)]
             except:
                 features['gearbox'] = ''
 
             try:
-                features['engine_capacity'] = script.split('"stccm"')[1].split(': ')[1].split(',')[0]
+                features['fuel'] = script[(script.index('Paliwo') + 1)]
+            except:
+                features['fuel'] = ''
+
+            try:
+                features['engine_capacity'] = script[(script.index('Pojemność') + 1)]
             except:
                 features['engine_capacity'] = ''
+
+            try:
+                features['color'] = script[(script.index('Kolor') + 1)]
+            except:
+                features['color'] = ''
+
+            try:
+                features['feature_list'] = [feature for feature in res.css('p.bullet-point-text::text').getall()]
+            except:
+                features['feature_list'] = ''
+
+            try:
+                features['description'] = res.css('div.description-text::text').get()
+            except:
+                features['description'] = ''
 
         except:
             print("Car Extraction Failed")
@@ -203,5 +220,5 @@ class AutoScoutScraper(scrapy.Spider):
 if __name__ == "__main__":
     #  run scraper
     process = CrawlerProcess()
-    process.crawl(AutoScoutScraper)
+    process.crawl(MobileDeScraper)
     process.start()

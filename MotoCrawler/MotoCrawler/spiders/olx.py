@@ -1,13 +1,10 @@
 import datetime
 import json
-from urllib.parse import urlencode
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
-from scrapy.selector import Selector
 
-
-# OnTheMarket scraper class
+# olx scraper class
 class OlxScraper(scrapy.Spider):
     #  spider name
     name = 'olx'
