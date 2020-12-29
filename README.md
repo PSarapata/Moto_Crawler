@@ -16,6 +16,10 @@ Second Spider crawls another website, which consists of own and external offers.
 ---------------
 Current functionality: Start each spider manually from console. Spiders scrape through 4 popular car selling websites based on input json file, return ready-to-process dictionary items in a json output file. I plan to add one more spider, add pagination for all, then move on to handle PostgreSQL database.
 
+22.12.2020
+--------------
+Spiders scrape 5 websites, pagination works. There is a unique output file produced for each spider.
+
 29.12.2020 14:30
 ---------------
 I am currently watching tutorials to expand my knowledge on Django REST framework and API building. I might potentially build a full-stack app with a simple React front-end. After I've finished with this, I will move on to Celery tutorials and then hopefully add some code again. Apologies for being quiet. :)
