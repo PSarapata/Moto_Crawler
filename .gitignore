@@ -168,6 +168,7 @@ dmypy.json
 # Translations
 
 # Django stuff:
+migrations/
 
 # Flask stuff:
 
@@ -212,7 +213,7 @@ dmypy.json
 # profiling data
 
 # Examples and development stuff
-helpers/
+MotoCrawler/MotoCrawler/core/helpers/
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python
 
