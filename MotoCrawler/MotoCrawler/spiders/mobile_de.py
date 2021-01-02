@@ -3,9 +3,16 @@ import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
+# I had some problem with imports, you might not need it
+import repackage
+repackage.up()
+from items import MotocrawlerItem
+
 
 # mobile_de Scraper scraper class
 class MobileDeScraper(scrapy.Spider):
+    """Spider for scraping German automotive website, offers two output options - stores offers either in json file
+    or save in your database. Simply uncomment filename references if you prefer the first option."""
     #  spider name
     name = 'mobile_de'
 
@@ -68,7 +75,7 @@ class MobileDeScraper(scrapy.Spider):
     def start_requests(self):
 
         #  init filename
-        filename = './output/Moto_Crawler_MobileDe_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
+        # filename = './output/Moto_Crawler_MobileDe_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
         #  brands count
         count = 1
@@ -80,7 +87,7 @@ class MobileDeScraper(scrapy.Spider):
             yield scrapy.Request(url=next_car, headers=self.headers, meta={
                 'brand': brand,
                 'model': model,
-                'filename': filename,
+                # 'filename': filename,
                 'count': count,
             }, callback=self.parse_links)
             count += 1
@@ -90,7 +97,7 @@ class MobileDeScraper(scrapy.Spider):
         #  extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')
-        filename = res.meta.get('filename')
+        # filename = res.meta.get('filename')
         count = res.meta.get('count')
 
         #  print Verbose debug info
@@ -102,7 +109,7 @@ class MobileDeScraper(scrapy.Spider):
             yield res.follow(url=('https://www.mobile.de' + listing), headers=self.headers, meta={
                 'brand': brand,
                 'model': model,
-                'filename': filename,
+                # 'filename': filename,
                 'count': count}, callback=self.parse_listing)
 
         try:
@@ -127,7 +134,7 @@ class MobileDeScraper(scrapy.Spider):
                 yield res.follow(url=next_page, headers=self.headers, meta={
                     'brand': brand,
                     'model': model,
-                    'filename': filename,
+                    # 'filename': filename,
                     'count': count}, callback=self.parse_links)
         except:
             pass
@@ -137,7 +144,7 @@ class MobileDeScraper(scrapy.Spider):
         # extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')
-        filename = res.meta.get('filename')
+        # filename = res.meta.get('filename')
 
         try:
             features = {
@@ -212,8 +219,19 @@ class MobileDeScraper(scrapy.Spider):
             print("Car Extraction Failed")
 
         # write data to JSONL file
-        with open(filename, 'a') as f:
-            f.write(json.dumps(features, indent=4) + '\n')
+        # with open(filename, 'a') as f:
+        #     f.write(json.dumps(features, indent=4) + '\n')
+
+        # write data to Database
+        motocrawler_item = MotocrawlerItem(
+            url=features['url'],
+            brand=features['brand'],
+            model=features['model'],
+            title=features['title'],
+            price=features['price'],
+            description=features['full_description']
+        )
+        yield motocrawler_item
 
 
 #  main driver

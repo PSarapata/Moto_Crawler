@@ -2,6 +2,8 @@ import datetime
 import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
+
+# I had some problem with imports, you might not need it
 import repackage
 repackage.up()
 from items import MotocrawlerItem
@@ -9,6 +11,8 @@ from items import MotocrawlerItem
 
 # sprzedajemy scraper class
 class SprzedajemyScraper(scrapy.Spider):
+    """Spider for scraping Polish automotive website, offers two output options - stores offers either in json file
+    or save in your database. Simply uncomment filename references if you prefer the first option."""
     #  spider name
     name = 'sprzedajemy'
 
