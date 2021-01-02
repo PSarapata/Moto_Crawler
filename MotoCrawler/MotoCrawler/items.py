@@ -7,6 +7,16 @@ import scrapy
 
 
 class MotocrawlerItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    """Basic Offer class database item."""
+    # pass
+    url = scrapy.Field()
+    brand = scrapy.Field()
+    model = scrapy.Field()
+    title = scrapy.Field()
+    price = scrapy.Field()
+    description = scrapy.Field()
+#
+#
+# class CarPhoto(scrapy.Item):
+#     """Class for advert photos"""
+#     url = scrapy.Field()

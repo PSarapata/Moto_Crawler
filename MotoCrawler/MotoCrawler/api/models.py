@@ -7,7 +7,7 @@ class Offer(models.Model):
     model = models.TextField(max_length=128)
     title = models.TextField(max_length=1024)
     price = models.TextField(max_length=24)
-    description = models.TextField(max_length=2048)
+    description = models.TextField(max_length=2048, null=True)
 
     def __str__(self):
         return self.title
