@@ -1,6 +1,12 @@
-from scrapy import cmdline
+import os
 
-cmdline.execute('scrapy crawl autoscout'.split())  # Add the command to run the crawler
-cmdline.execute('scrapy crawl mobile_de'.split())
-cmdline.execute('scrapy crawl olx'.split())
-cmdline.execute('scrapy crawl sprzedajemy'.split())
+commands = [
+    'scrapy crawl autoscout',
+    'scrapy crawl mobile_de',
+    'scrapy crawl olx',
+    'scrapy crawl sprzedajemy'
+]
+
+if __name__ == "__main__":
+    for com in commands:
+        os.system(com)

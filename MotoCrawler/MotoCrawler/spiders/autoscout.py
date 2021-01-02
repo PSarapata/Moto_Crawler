@@ -212,7 +212,7 @@ class AutoScoutScraper(scrapy.Spider):
             model=features['model'],
             title=features['title'],
             price=features['price'],
-            description=features['full_description']
+            description=features.get('full_description')
         )
         yield motocrawler_item
 

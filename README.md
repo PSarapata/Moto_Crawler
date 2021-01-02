@@ -23,3 +23,10 @@ Spiders scrape 5 websites, pagination works. There is a unique output file produ
 29.12.2020 14:30
 ---------------
 I am currently watching tutorials to expand my knowledge on Django REST framework and API building. I might potentially build a full-stack app with a simple React front-end. After I've finished with this, I will move on to Celery tutorials and then hopefully add some code again. Apologies for being quiet. :)
+
+02.01.2020 19:00
+---------------
+Api is now configured, spiders can now be queued by one-line of code, simply start run.py from terminal. At the 
+moment pipeline is producing only Offer items, I have already prepared ground for the full relation. After photos I 
+will move on to integrating front end and lastly set up celery to run spiders automatically at given times of day.
+I will then look to expand the models to add another relation (extra features/informations).

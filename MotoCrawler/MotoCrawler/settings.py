@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'MotoCrawler.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
-COMMANDS_MODULE = 'MotoCrawler.commands'
+# COMMANDS_MODULE = 'MotoCrawler.commands'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
