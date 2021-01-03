@@ -15,6 +15,8 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 
 class OfferPhotoSerializer(serializers.ModelSerializer):
+    photo_url = serializers.ReadOnlyField(source='photo.url')
+
     class Meta:
-        fields = ('id', 'offer', 'photo')
+        fields = ('id', 'offer', 'photo', 'photo_url')
         model = OfferPhoto

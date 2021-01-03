@@ -229,7 +229,8 @@ class MobileDeScraper(scrapy.Spider):
             model=features['model'],
             title=features['title'],
             price=features['price'],
-            description=features.get('description')
+            description=features.get('description'),
+            photos=features.get('image_urls')
         )
         yield motocrawler_item
 

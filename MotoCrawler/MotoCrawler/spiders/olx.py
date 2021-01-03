@@ -233,7 +233,8 @@ class OlxScraper(scrapy.Spider):
                 model=features['model'],
                 title=features['title'],
                 price=features['price'],
-                description=features['full_description']
+                description=features.get('full_description'),
+                photos=features.get('image_urls')
             )
             yield motocrawler_item
 
@@ -322,7 +323,8 @@ class OlxScraper(scrapy.Spider):
                 model=features['model'],
                 title=features['title'],
                 price=features['price'],
-                description=features['full_description']
+                description=features.get('full_description'),
+                photos=features.get('image_urls')
             )
             yield motocrawler_item
         else:

@@ -15,8 +15,4 @@ class MotocrawlerItem(scrapy.Item):
     title = scrapy.Field()
     price = scrapy.Field()
     description = scrapy.Field()
-#
-#
-# class CarPhoto(scrapy.Item):
-#     """Class for advert photos"""
-#     url = scrapy.Field()
+    photos = scrapy.Field()

@@ -87,3 +87,14 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# Django integration
+import os
+import sys
+import django
+
+sys.path.append("/home/psarapata/Desktop/MotoCrawler/MotoCrawler/MotoCrawler")
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
+
+django.setup()

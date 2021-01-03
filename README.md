@@ -30,3 +30,15 @@ Api is now configured, spiders can now be queued by one-line of code, simply sta
 moment pipeline is producing only Offer items, I have already prepared ground for the full relation. After photos I 
 will move on to integrating front end and lastly set up celery to run spiders automatically at given times of day.
 I will then look to expand the models to add another relation (extra features/informations).
+
+03.01.2020 18:40
+---------------
+I have configured Django ORM to serve Scrapy pipeline, so that it now scans database for duplicates before saving an 
+db object instance. 
+
+API appears to be fully functional. Under /api/ uri there is basic info about each offer,
+/api/<id>/ is the detail retrieve/delete, /api/photos/ stores all photo instances, whereas
+/api/offerphoto/<id>/ is the list of all offerphoto instances <u><em>for the given offer</em></u>.
+
+I will now try to add a React Front End and then attempt to automate scraping further, so that instead of firing off 
+spiders manually from script, the script would fire at specified times of day.
