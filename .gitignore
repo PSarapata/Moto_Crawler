@@ -172,6 +172,25 @@ migrations/
 
 # Flask stuff:
 
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+package.json
+package-lock.json
+
+public
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
+
 # Scrapy stuff:
 
 # Sphinx documentation
@@ -214,6 +233,9 @@ migrations/
 
 # Examples and development stuff
 MotoCrawler/MotoCrawler/core/helpers/
+
+# Random Stuff
+.eslintcache
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python
 

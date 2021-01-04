@@ -1,5 +1,6 @@
 # Moto_Crawler
-My CodersLab final project, car selling websites web scraper built with Scrapy and Celery.
+My CodersLab final project, car selling websites web scraper built with Scrapy and Celery, using Django RESTful API 
+and utilizing ReactJS Front End.
 
 
 16.12.2020 10:00
@@ -27,18 +28,26 @@ I am currently watching tutorials to expand my knowledge on Django REST framewor
 02.01.2020 19:00
 ---------------
 Api is now configured, spiders can now be queued by one-line of code, simply start run.py from terminal. At the 
-moment pipeline is producing only Offer items, I have already prepared ground for the full relation. After photos I 
+moment pipeline is producing only Offer items, I have already prepared ground for the full relation. After photos, I 
 will move on to integrating front end and lastly set up celery to run spiders automatically at given times of day.
-I will then look to expand the models to add another relation (extra features/informations).
+I will then look to expand the models to add another relation (extra features/information).
 
 03.01.2020 18:40
 ---------------
-I have configured Django ORM to serve Scrapy pipeline, so that it now scans database for duplicates before saving an 
+I have configured Django ORM to serve Scrapy pipeline, so that it now scans database for duplicates before saving a 
 db object instance. 
 
 API appears to be fully functional. Under /api/ uri there is basic info about each offer,
-/api/<id>/ is the detail retrieve/delete, /api/photos/ stores all photo instances, whereas
-/api/offerphoto/<id>/ is the list of all offerphoto instances <u><em>for the given offer</em></u>.
+/api/id/ is the detail retrieve/delete, /api/photos/ stores all photo instances, whereas
+/api/offerphoto/id/ is the list of all offerphoto instances <u>for the given offer</u>.
 
 I will now try to add a React Front End and then attempt to automate scraping further, so that instead of firing off 
 spiders manually from script, the script would fire at specified times of day.
+
+04.01.2020 21:00
+---------------
+React Front End added, correctly connects through django-cors-headers, fetches data from first page of API (100 
+records) and displays it onto front page. I modified free Album template from Materials-UI. I also added another 
+readonly field to Offer serializer to get all URLs for related many-to-many offerphoto instances. Currently the app 
+looks like this:
+                                    https://snipboard.io/u64yJj.jpg

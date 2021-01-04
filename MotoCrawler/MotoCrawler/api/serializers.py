@@ -2,12 +2,6 @@ from rest_framework import serializers
 from .models import Offer, Photo, OfferPhoto
 
 
-class OfferSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = ('id', 'url', 'brand', 'model', 'title', 'price', 'description')
-        model = Offer
-
-
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'url')
@@ -20,3 +14,11 @@ class OfferPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'offer', 'photo', 'photo_url')
         model = OfferPhoto
+
+
+class OfferSerializer(serializers.ModelSerializer):
+    photo_urls = serializers.StringRelatedField(many=True, source="offerphoto_set.all", read_only=True)
+
+    class Meta:
+        fields = ('id', 'url', 'brand', 'model', 'title', 'price', 'description', 'photo_urls')
+        model = Offer
