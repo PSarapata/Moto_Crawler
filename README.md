@@ -51,3 +51,9 @@ records) and displays it onto front page. I modified free Album template from Ma
 readonly field to Offer serializer to get all URLs for related many-to-many offerphoto instances. Currently the app 
 looks like this:
                                     https://snipboard.io/u64yJj.jpg
+
+06.01.2020 18:40
+---------------
+Authorization partially implemented. Once it is fully operational, all views (besides register and login) are 
+going to be restricted. Until then I keep them as IsAuthenticatedOrReadOnly. JWT tokens are being issued, although 
+something is still missing. I will try to resolve this within next couple of days.

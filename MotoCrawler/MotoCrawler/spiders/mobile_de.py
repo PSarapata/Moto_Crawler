@@ -45,8 +45,8 @@ class MobileDeScraper(scrapy.Spider):
     #  custom download settings
     custom_settings = {
         #  uncomment to set accordingly
-        # "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-        # "DOWNLOAD_TIMEOUT": 0.25  # 250 ms of delay
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
+        "DOWNLOAD_TIMEOUT": 0.25  # 250 ms of delay
     }
 
     #  current page

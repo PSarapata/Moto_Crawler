@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Offers(props) {
   const { offers } = props;
   const classes = useStyles();
-  if (!offers || offers.length === 0) return <p>No offers in the database, sorry.</p>;
+  if (!offers || offers.length === 0) return <p>Data is being loaded, database is empty or you are not authenticated. Please login.</p>;
   return (
     <React.Fragment>
       <CssBaseline />
@@ -79,6 +80,9 @@ export default function Offers(props) {
                         ? offer.description.substr(0, 60)
                           : <p>No description</p>
                       }...
+                    </Typography>
+                    <Typography style={{fontWeight:'bold'}}>
+                      { offer.price }
                     </Typography>
                   </CardContent>
                   <CardActions>
