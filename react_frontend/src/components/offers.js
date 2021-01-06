@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import {Box} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -43,7 +42,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Offers(props) {
   const { offers } = props;
   const classes = useStyles();
-  if (!offers || offers.length === 0) return <p>Data is being loaded, database is empty or you are not authenticated. Please login.</p>;
+  if (!offers || offers.length === 0) return <p>Apologies, there is an issue... Possible options are:
+    <ul>
+      <li>Data is still being fetched</li>
+      <li>Database is empty</li>
+      <li>Server is down</li>
+      <li>You are not authenticated. Please <Link href="/login/">Login</Link>.</li>
+    </ul>
+    </p>
   return (
     <React.Fragment>
       <CssBaseline />

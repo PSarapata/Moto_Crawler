@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import OfferList, OfferDetail, PhotoList, PhotoDetail, OfferPhotosList, TestView
+from .views import OfferList, OfferDetail, PhotoList, PhotoDetail, OfferPhotosList, UserCreate, BlacklistTokenView, TestView
 
 urlpatterns = [
     path('<int:pk>/', OfferDetail.as_view(), name='detailview'),
@@ -7,6 +7,7 @@ urlpatterns = [
     path('photos/', PhotoList.as_view(), name='photolistview'),
     path('photos/<int:pk>/', PhotoDetail.as_view(), name='photodetailview'),
     path('offerphotos/<int:pk>/', OfferPhotosList.as_view(), name='offerphotos'),
-    # path('user/register/', UserCreate.as_view(), name='register')
+    path('user/register/', UserCreate.as_view(), name='register'),
+    path('user/logout/blacklist/', BlacklistTokenView.as_view(), name='blacklist'),
     path('test/', TestView.as_view(), name='test')
 ]

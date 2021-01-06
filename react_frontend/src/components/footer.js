@@ -34,6 +34,9 @@ export default function Footer() {
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
+        <Typography variant="subtitle2" align="center" color="textSecondary" component="p">
+              Currently logged in as: { localStorage.username }
+        </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Welcome to MotoCrawler FrontEnd!
         </Typography>

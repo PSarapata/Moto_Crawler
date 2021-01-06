@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axiosInstance from '../axios';
+import { useHistory } from 'react-router-dom';
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -58,6 +61,42 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+  const history = useHistory();
+  const initialFormData = Object.freeze({
+    email: '',
+    username: '',
+    password: '',
+  });
+
+  const [formData, updateFormData] = useState(initialFormData);
+
+  const handleChange = (e) => {
+    updateFormData({
+      ...formData,
+      [e.target.name]: e.target.value.trim(),
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axiosInstance
+            .post(`token/`, {
+              email: formData.email,
+              username: formData.username,
+              password: formData.password,
+            })
+            .then((res) => {
+              localStorage.setItem('access_token', res.data.access);
+              localStorage.setItem('refresh_token', res.data.refresh);
+              localStorage.setItem('username', res.data.username)
+              axiosInstance.defaults.headers['Authorization'] =
+                  'JWT ' + localStorage.getItem('access_token');
+              history.push('/');
+            });
+  alert("You are now logged in. Happy browsing!")
+  };
+
   const classes = useStyles();
 
   return (
@@ -83,6 +122,7 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleChange}
             />
             <TextField
                 variant="outlined"
@@ -92,6 +132,7 @@ export default function Login() {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                onChange={handleChange}
             />
             <TextField
               variant="outlined"
@@ -103,6 +144,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <Button
               type="submit"
@@ -110,6 +152,7 @@ export default function Login() {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={handleSubmit}
             >
               Sign In
             </Button>

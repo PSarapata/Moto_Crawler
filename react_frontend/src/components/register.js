@@ -57,7 +57,7 @@ export default function Register() {
 		axiosInstance
 			.post(`user/register/`, {
 				email: formData.email,
-				user_name: formData.username,
+				username: formData.username,
 				password: formData.password,
 			})
 			.then((res) => {

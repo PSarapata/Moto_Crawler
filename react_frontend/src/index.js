@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Register from "./components/register";
 import Login from "./components/login";
-import Logout from "./components/logout";
+import SignOut from "./components/logout";
 import * as serviceWorker from './serviceWorker';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Header from './components/header';
@@ -18,7 +18,7 @@ const routing = (
                 <Route exact path="/" component={App} />
                 <Route path="/register" component={Register} />
                 <Route path="/login" component={Login} />
-                <Route path="/logout" component={Logout} />
+                <Route path="/logout" component={SignOut} />
             </Switch>
             <Footer />
         </React.StrictMode>

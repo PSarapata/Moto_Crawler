@@ -1,9 +1,11 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from django.contrib.auth.models import User
+from rest_framework import generics, status
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Offer, Photo, OfferPhoto
-from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer
+from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer, UserSerializer
 
 
 class OfferList(generics.ListAPIView):
@@ -40,6 +42,24 @@ class OfferPhotosList(generics.ListAPIView):
         queryset = OfferPhoto.objects.filter(offer_id=pk)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+
+class BlacklistTokenView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class TestView(generics.GenericAPIView):
