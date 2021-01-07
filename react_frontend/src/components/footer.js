@@ -26,16 +26,13 @@ function Copyright() {
 
 export default function Footer() {
     const classes = useStyles();
-
+    console.log(localStorage);
     return (
     <React.Fragment>
         {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Footer
-        </Typography>
-        <Typography variant="subtitle2" align="center" color="textSecondary" component="p">
-              Currently logged in as: { localStorage.username }
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Welcome to MotoCrawler FrontEnd!

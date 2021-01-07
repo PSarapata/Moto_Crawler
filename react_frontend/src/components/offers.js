@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -39,17 +39,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function Offers(props) {
   const { offers } = props;
   const classes = useStyles();
-  if (!offers || offers.length === 0) return <p>Apologies, there is an issue... Possible options are:
+  if (!offers || offers.length === 0) return <div>Apologies, there is an issue... Possible options are:
     <ul>
       <li>Data is still being fetched</li>
       <li>Database is empty</li>
       <li>Server is down</li>
       <li>You are not authenticated. Please <Link href="/login/">Login</Link>.</li>
     </ul>
-    </p>
+    </div>
+  if (!offers.results) return <div>You are not authenticated. Please <Link href="/login/">Login</Link> to view offers.</div>
   return (
     <React.Fragment>
       <CssBaseline />
@@ -105,7 +107,7 @@ export default function Offers(props) {
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))}}
           </Grid>
         </Container>
       </main>

@@ -38,7 +38,7 @@ class MobileDeScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "User-Agent": "Mozilla/5.0 (Macintosh; PPC Mac OS X 10_8_9 rv:6.0; en-US) AppleWebKit/534.4.5 (KHTML, like Gecko) Version/5.1 Safari/534.4.5",
         "referer": base_url
     }
 
@@ -46,7 +46,7 @@ class MobileDeScraper(scrapy.Spider):
     custom_settings = {
         #  uncomment to set accordingly
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-        "DOWNLOAD_TIMEOUT": 0.25  # 250 ms of delay
+        "DOWNLOAD_TIMEOUT": 1  # 1 s of delay
     }
 
     #  current page

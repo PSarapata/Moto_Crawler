@@ -3,7 +3,7 @@ import os
 commands = [
     'scrapy crawl autoscout',
     'scrapy crawl mobile_de',
-    'scrapy crawl olx',
+    # 'scrapy crawl olx',
     'scrapy crawl sprzedajemy'
 ]
 

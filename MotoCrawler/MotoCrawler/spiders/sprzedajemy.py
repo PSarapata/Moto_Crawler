@@ -26,7 +26,7 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "User-Agent": "Mozilla/5.0 (iPad; CPU OS 8_0_2 like Mac OS X; en-US) AppleWebKit/534.37.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B116 Safari/6534.37.6",
         "referer": base_url
     }
 
@@ -34,7 +34,7 @@ class SprzedajemyScraper(scrapy.Spider):
     custom_settings = {
         #  uncomment to set accordingly
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-        "DOWNLOAD_TIMEOUT": 0.25  # 250 ms of delay
+        "DOWNLOAD_TIMEOUT": 1  # 1 s of delay
     }
 
     #  current offset

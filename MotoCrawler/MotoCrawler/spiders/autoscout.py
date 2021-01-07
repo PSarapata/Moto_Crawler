@@ -30,7 +30,7 @@ class AutoScoutScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "User-Agent": "Mozilla/5.0 (Macintosh; PPC Mac OS X 10_6_3) AppleWebKit/5321 (KHTML, like Gecko) Chrome/37.0.809.0 Mobile Safari/5321",
         "referer": base_url
     }
 
@@ -38,7 +38,7 @@ class AutoScoutScraper(scrapy.Spider):
     custom_settings = {
         #  uncomment to set accordingly
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-        "DOWNLOAD_TIMEOUT": 0.25  # 250 ms of delay
+        "DOWNLOAD_TIMEOUT": 1  # 1 s of delay
     }
 
     #  current page

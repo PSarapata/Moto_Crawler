@@ -43,7 +43,7 @@ function Header() {
                     </Typography>
                     </Link>
                     <Button
-                        color="textPrimary"
+                        color="primary"
                         href="#"
                         variant="outlined"
                         className={classes.link}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import './App.css';
 import Offers from "./components/offers";
 import OfferLoadingComponent from './components/offerLoading'
+import axiosInstance from "./axios";
 
 function App() {
     const OfferLoading = OfferLoadingComponent(Offers);
@@ -9,13 +10,12 @@ function App() {
         loading: false,
         offers: null,
     });
+
     useEffect(() => {
-        const apiUrl = `http://127.0.0.1:8000/api/`;
-        fetch(apiUrl)
-            .then((data) => data.json())
-            .then((offers) => {
-                setAppState({ loading: false, offers: offers});
-            });
+		axiosInstance.get().then((res) => {
+            const allOffers = res.data;
+            setAppState({loading: false, offers: allOffers});
+        });
     }, [setAppState]);
     return (
         <div className="App">
@@ -23,5 +23,6 @@ function App() {
         </div>
     );
 }
+
 
 export default App;

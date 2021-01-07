@@ -31,7 +31,7 @@ class OlxScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:83.0) Gecko/20100101 Firefox/83.0",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 7_2_1 like Mac OS X; sl-SI) AppleWebKit/533.1.6 (KHTML, like Gecko) Version/3.0.5 Mobile/8B115 Safari/6533.1.6",
         "referer": base_url
     }
 
