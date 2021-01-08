@@ -54,6 +54,12 @@ looks like this:
 
 06.01.2020 18:40
 ---------------
-Authorization partially implemented. Once it is fully operational, all views (besides register and login) are 
+Authentication partially implemented. Once it is fully operational, all views (besides register and login) are 
 going to be restricted. Until then I keep them as IsAuthenticatedOrReadOnly. JWT tokens are being issued, although 
 something is still missing. I will try to resolve this within next couple of days.
+
+08.01.2020 18:20
+--------------
+Authentication finished. Simple search by model name added and tested. Logged in username is shown in the header 
+element of React. Next up is pagination. I will also implement a relation between user and offers to store User's 
+favourite ads.

@@ -10,6 +10,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
 import Hello from "./components/hello";
+import Search from "./components/search"
 
 const routing = (
     <Router>
@@ -21,6 +22,7 @@ const routing = (
                 <Route path="/login" component={Login} />
                 <Route path="/logout" component={SignOut} />
                 <Route path="/hello" component={Hello} />
+                <Route path="/search" component={Search} />
             </Switch>
             <Footer />
         </React.StrictMode>

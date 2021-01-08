@@ -80,9 +80,11 @@ class Login extends Component {
                   axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
                   localStorage.setItem('access_token', result.data.access);
                   localStorage.setItem('refresh_token', result.data.refresh);
+                  localStorage.setItem('Username', this.state.username ? this.state.username : 'anonymous');
               },
               alert("You are now logged in, happy browsing!"),
-              this.props.history.push('/')
+              this.props.history.push('/'),
+              window.location.reload()
       ).catch (error => {
           throw error;
       })

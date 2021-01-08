@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -86,7 +86,7 @@ export default function Offers(props) {
                     <Typography>
                       { offer.description !== null
                         ? offer.description.substr(0, 60)
-                          : <p>No description</p>
+                          : "No description"
                       }...
                     </Typography>
                     <Typography style={{fontWeight:'bold'}}>
