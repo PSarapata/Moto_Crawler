@@ -5,7 +5,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Offer, Photo, OfferPhoto
-from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer
+from authentication.models import MotoCrawlerUser
+from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer, FavouriteUserOffersSerializer
 
 
 class OfferList(generics.ListAPIView):
@@ -58,3 +59,11 @@ class OfferSearch(generics.ListAPIView):
     serializer_class = OfferSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['^brand', '^model']
+
+
+class UserFavouriteOffers(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
+    authentication_classes = ()
+
+    queryset = MotoCrawlerUser.objects.all()
+    serializer_class = FavouriteUserOffersSerializer

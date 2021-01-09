@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import MotoCrawlerUser
 
 
 class Offer(models.Model):
@@ -23,7 +24,13 @@ class Photo(models.Model):
 
 class OfferPhoto(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    photo = models.ForeignKey(Photo, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
         return self.photo.url
+
+
+class UserFavouriteOffer(models.Model):
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
+    user = models.ForeignKey(MotoCrawlerUser, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)

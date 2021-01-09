@@ -63,3 +63,12 @@ something is still missing. I will try to resolve this within next couple of day
 Authentication finished. Simple search by model name added and tested. Logged in username is shown in the header 
 element of React. Next up is pagination. I will also implement a relation between user and offers to store User's 
 favourite ads.
+
+09.01.2020 16:25
+--------------
+Relation has been added and simple view with a basic serializer also, sitting at 
+"/api/user/favourites/<int:user_id>/" endpoint. I also realized that offer-photo relation is actually one to many 
+(one offer can have multiple photos, but each photo can only have one offer), so updated the models accordingly. I 
+will try to extend favourite offer functionality. After that I will add unit tests in pytest, and also update 
+documentation throughout the project.
+Next up, if time permits, I might attempt to add a notification whenever a specific item appears in the database.

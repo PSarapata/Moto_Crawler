@@ -88,6 +88,9 @@ const Search = () => {
 													? offer.description.substr(0, 40)
 													: "No description"}...
 											</Typography>
+											<Typography style={{fontWeight:'bold'}}>
+											  { offer.price }
+											</Typography>
 										</div>
 									</CardContent>
 								</Card>

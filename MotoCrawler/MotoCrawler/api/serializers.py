@@ -1,6 +1,7 @@
 from rest_framework import serializers
+
 from .models import Offer, Photo, OfferPhoto
-from django.contrib.auth.models import User
+from authentication.models import MotoCrawlerUser
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -25,15 +26,9 @@ class OfferSerializer(serializers.ModelSerializer):
         model = Offer
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email', 'username', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+class FavouriteUserOffersSerializer(serializers.ModelSerializer):
+    offers = serializers.StringRelatedField(many=True, source="userfavouriteoffer_set.all", read_only=True)
 
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
+    class Meta:
+        fields = ('username', 'offers')
+        model = MotoCrawlerUser

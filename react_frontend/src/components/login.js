@@ -72,20 +72,24 @@ class Login extends Component {
 
   handleSubmitWThen(event){
       event.preventDefault();
+      console.log('This is being sent to API', this.state.username);
       axiosInstance.post('/token/obtain/', {
               username: this.state.username,
               password: this.state.password
           }).then(
               result => {
-                  axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
                   localStorage.setItem('access_token', result.data.access);
                   localStorage.setItem('refresh_token', result.data.refresh);
                   localStorage.setItem('Username', this.state.username ? this.state.username : 'anonymous');
-              },
-              alert("You are now logged in, happy browsing!"),
-              this.props.history.push('/'),
-              window.location.reload()
-      ).catch (error => {
+                  axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
+
+                  this.props.history.push('/');
+                      window.location.reload();
+                      alert("You are now logged in, happy browsing!");
+                      console.log(result);
+                      console.log(result.data);
+
+              }).catch (error => {
           throw error;
       })
   }

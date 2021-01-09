@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
-# For now this is just a test to fix authentication issue I ran up to, I am following a tutorial from Hackernoon:
+# MotoCrawlerUser extends from base Django user. I used it for authentication, following this tutorial:
 # "https://hackernoon.com/110percent-complete-jwt-authentication-with-django-and-react-2020-iejq34ta"
-# I might change this field to create an actual favourite offer relation at some point in the future.
+# I then had an idea to create a relation so a user can store/watch his favourite offers, hence the relation:
 class MotoCrawlerUser(AbstractUser):
-    favourite_offer = models.CharField(blank=True, max_length=120)
+    favourite_offers = models.ManyToManyField("api.Offer", through="api.UserFavouriteOffer")
