@@ -27,8 +27,9 @@ class OfferSerializer(serializers.ModelSerializer):
 
 
 class FavouriteUserOffersSerializer(serializers.ModelSerializer):
-    offers = serializers.StringRelatedField(many=True, source="userfavouriteoffer_set.all", read_only=True)
+    """Depth attribute allows to get into favourite_offers of the user whose PK was sent with the URI"""
 
     class Meta:
-        fields = ('username', 'offers')
+        fields = ('username', 'favourite_offers')
         model = MotoCrawlerUser
+        depth = 1

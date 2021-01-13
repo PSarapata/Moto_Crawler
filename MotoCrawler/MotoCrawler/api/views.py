@@ -1,5 +1,5 @@
 from rest_framework import generics, status, filters
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -7,6 +7,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Offer, Photo, OfferPhoto
 from authentication.models import MotoCrawlerUser
 from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer, FavouriteUserOffersSerializer
+
+
+class ManageFavouriteOfferPermission(BasePermission):
+    message = 'Viewing favourite offers is only allowed for their owner.'
+
+    def has_object_permission(self, request, view, obj):
+        return obj.pk == request.user
 
 
 class OfferList(generics.ListAPIView):
@@ -61,8 +68,10 @@ class OfferSearch(generics.ListAPIView):
     search_fields = ['^brand', '^model']
 
 
-class UserFavouriteOffers(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]
+class UserFavouriteOffers(generics.RetrieveAPIView, ManageFavouriteOfferPermission):
+    """View is ReadOnly, only related (owner) User can view his favourite offers."""
+
+    permission_classes = [ManageFavouriteOfferPermission]
     authentication_classes = ()
 
     queryset = MotoCrawlerUser.objects.all()

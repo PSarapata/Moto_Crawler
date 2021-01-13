@@ -72,3 +72,7 @@ Relation has been added and simple view with a basic serializer also, sitting at
 will try to extend favourite offer functionality. After that I will add unit tests in pytest, and also update 
 documentation throughout the project.
 Next up, if time permits, I might attempt to add a notification whenever a specific item appears in the database.
+
+13.01.2020 22:00
+--------------
+Slight progress - had a brainstorm on how to approach building the favourite user offer functionality. Decided to go with DEPTH attribute in serializer. View is locked for owner's eyes only. Still need to figure out a way to Create, Update & Delete related favourite_offer instances.
