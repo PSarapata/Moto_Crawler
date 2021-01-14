@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
-from .models import Offer, Photo, OfferPhoto
-from authentication.models import MotoCrawlerUser
+from .models import Offer, Photo, OfferPhoto, UserFavouriteOffer
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -26,10 +25,9 @@ class OfferSerializer(serializers.ModelSerializer):
         model = Offer
 
 
-class FavouriteUserOffersSerializer(serializers.ModelSerializer):
-    """Depth attribute allows to get into favourite_offers of the user whose PK was sent with the URI"""
-
+class FavouriteOfferSerializer(serializers.ModelSerializer):
+    """Serializer lists id of related UserFavouriteOffer instance and details of related Offer instance"""
     class Meta:
-        fields = ('username', 'favourite_offers')
-        model = MotoCrawlerUser
+        exclude = ('timestamp', 'user')
+        model = UserFavouriteOffer
         depth = 1

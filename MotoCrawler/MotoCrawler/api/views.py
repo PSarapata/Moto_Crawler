@@ -1,12 +1,12 @@
-from rest_framework import generics, status, filters
+from rest_framework import generics, status, filters, viewsets
 from rest_framework.permissions import AllowAny, BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.shortcuts import get_list_or_404, get_object_or_404
 
-from .models import Offer, Photo, OfferPhoto
-from authentication.models import MotoCrawlerUser
-from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer, FavouriteUserOffersSerializer
+from .models import Offer, Photo, OfferPhoto, UserFavouriteOffer
+from .serializers import OfferSerializer, PhotoSerializer, OfferPhotoSerializer, FavouriteOfferSerializer
 
 
 class ManageFavouriteOfferPermission(BasePermission):
@@ -62,17 +62,27 @@ class BlacklistTokenView(APIView):
 
 
 class OfferSearch(generics.ListAPIView):
+    """Search by brand or model view. Filter backend tries to find a match between input string
+    and values taken from database, given how they begin.
+    Example:
+    You want to find model '3000 GT'. I recommend to use search phrase '3000', as it should yield all related
+    results, such as '3000-GT' or '3000GT' alongside the queried '3000 GT'."""
+
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['^brand', '^model']
 
 
-class UserFavouriteOffers(generics.RetrieveAPIView, ManageFavouriteOfferPermission):
-    """View is ReadOnly, only related (owner) User can view his favourite offers."""
-
+class UserFavouriteOfferViewSet(viewsets.ModelViewSet):
+    """Testing viewset approach whether it's gonna be easier to get into UserFavourites."""
     permission_classes = [ManageFavouriteOfferPermission]
-    authentication_classes = ()
+    serializer_class = FavouriteOfferSerializer
 
-    queryset = MotoCrawlerUser.objects.all()
-    serializer_class = FavouriteUserOffersSerializer
+    def get_object(self, queryset=None, **kwargs):
+        item = self.kwargs.get('pk')
+        return get_object_or_404(UserFavouriteOffer, pk=item)
+
+    # List only Offers related to logged in User
+    def get_queryset(self):
+        return get_list_or_404(UserFavouriteOffer, user=self.request.user)

@@ -75,4 +75,13 @@ Next up, if time permits, I might attempt to add a notification whenever a speci
 
 13.01.2020 22:00
 --------------
-Slight progress - had a brainstorm on how to approach building the favourite user offer functionality. Decided to go with DEPTH attribute in serializer. View is locked for owner's eyes only. Still need to figure out a way to Create, Update & Delete related favourite_offer instances.
+Slight progress - had a brainstorm on how to approach building the favourite user offer functionality. 
+Decided to go with DEPTH attribute in serializer. View is locked for owner's eyes only. 
+Still need to figure out a way to Create, Update & Delete related favourite_offer instances.
+
+14.01.2020 15:25
+---------------
+Major success - using a custom ModelViewSet I got a simple 'favourites' endpoint to list all Offers that were saved
+by the user. Passing a PK gives you access to edit (delete) a particular relation. Access is limited to the owner user.
+I have tested this using Postman and it actually works as expected! I can now focus on completing documentation for 
+the project and write some tests. Once I'm done with that, I will finish React side of things.

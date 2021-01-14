@@ -116,12 +116,9 @@ USE_L10N = True
 USE_TZ = True
 
 # CorsHeaders
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:63342"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
 ]
-CORS_ORIGIN_ALLOW = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
