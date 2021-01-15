@@ -6,6 +6,11 @@ from authentication.serializers import MotoCrawlerUserSerializer
 
 
 class MotoCrawlerUserCreate(APIView):
+    """
+    Registers new User.
+    Anyone is allowed to use this view, however view
+    only accepts data sent by POST requests.
+    """
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
 
@@ -20,6 +25,9 @@ class MotoCrawlerUserCreate(APIView):
 
 
 class HelloWorldView(APIView):
-
+    """
+    Simple Test View, displaying a pseudo-dictionary key-value pair 'hello: world'.
+    Comes in handy when testing authentication-related issues. Sits under 'hello/' endpoint.
+    """
     def get(self, request):
         return Response(data={"hello": "world"}, status=status.HTTP_200_OK)

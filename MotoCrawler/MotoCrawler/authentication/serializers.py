@@ -4,6 +4,10 @@ from authentication.models import MotoCrawlerUser
 
 
 class MotoCrawlerUserSerializer(serializers.ModelSerializer):
+    """Custom serializer for our Users. Password is in write-only mode, it will not be displayed.
+    It uses a custom create method, creates User object using validated data except password,
+    which is being passed after to the set_password method executed on newly created User instance.
+    """
     email = serializers.EmailField(
         required=True
     )
