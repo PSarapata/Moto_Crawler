@@ -16,6 +16,14 @@ class ManageFavouriteOfferPermission(BasePermission):
     Returns true if the User Primary Key passed along with the request matches
     the User Foreign Key of UserFavouriteOffer instance.
     User has to be authenticated.
+
+    :param: request: HTTP request
+    :type request: request: HTTP request
+    :param: view: Used on :class: 'UserFavouriteOfferViewSet' ModelViewSet.
+    :type view: class: 'UserFavouriteOfferViewSet'
+    :param: obj: Authorized User database object (model)
+    :obj type: object: 'MotoCrawlerUser'
+    :return: Boolean
     """
     message = 'Viewing favourite offers is only allowed for their owner.'
 
@@ -83,6 +91,7 @@ class BlacklistTokenView(APIView):
     If everything went as expected = returns HTTP_205_RESET_CONTENT
     Else = returns HTTP_400_BAD_REQUEST
     View is accessible by anyone.
+    :return: HTTP_205_RESET_CONTENT on success || HTTP_400_BAD_REQUEST on failure
     """
     permission_classes = [AllowAny]
     authentication_classes = ()

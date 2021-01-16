@@ -38,10 +38,11 @@ class OfferSerializer(serializers.ModelSerializer):
 
 
 class FavouriteOfferSerializer(serializers.ModelSerializer):
-    """Serializer displays Unique Identifier of related UserFavouriteOffer
-    instance and all attributes of related Offer instance.
+    """Serializer displays Unique Identifier and timestamp
+    of related UserFavouriteOffer instance and all attributes
+    of related Offer instance.
     'depth=1' flag was used to achieve this."""
     class Meta:
-        exclude = ('timestamp', 'user')
+        exclude = 'user'
         model = UserFavouriteOffer
         depth = 1

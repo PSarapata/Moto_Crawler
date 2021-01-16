@@ -125,17 +125,22 @@ CORS_ALLOWED_ORIGINS = [
 
 STATIC_URL = '/static/'
 
+# REST FRAMEWORK SETTINGS
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # LIMIT RESULTS PER PAGE TO 100 ITEMS
     'PAGE_SIZE': 100,
+    # PROJECT-WIDE PERMISSIONS - LIMIT VIEWS TO AUTHENTICATED USERS ONLY. CAN BE OVERRIDDEN ON VIEW LEVEL.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    # AUTHENTICATION UTILIZES JWT TOKENS
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
+# JWT TOKEN SETTINGS (AUTHORIZATION)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),

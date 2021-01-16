@@ -6,6 +6,7 @@ from scrapy.crawler import CrawlerProcess
 # I had some problem with imports, you might not need it
 import repackage
 repackage.up()
+# Import custom Scrapy item, which then gets fed into pipelines for processing:
 from items import MotocrawlerItem
 
 
@@ -13,7 +14,13 @@ from items import MotocrawlerItem
 class OlxScraper(scrapy.Spider):
     """Spider for scraping Polish automotive website, offers two output options - stores offers either in json file
     or save in your database. Simply uncomment filename references if you prefer the first option.
-    Keep in mind that this website shows offers from another portal as well."""
+    Keep in mind that this website shows offers from another portal as well.
+
+    WARNING: Those websites implemented extensive security measures. Do not produce too many consecutive requests or
+    you will get banned. You might also find that your data output is different than expected. I believe that is also
+    due to some hidden JS script, which were meant to protect from data scraping.
+    My advice - if you don't need this spider - don't use it.
+    """
 
     #  spider name
     name = 'olx'
@@ -21,7 +28,7 @@ class OlxScraper(scrapy.Spider):
     #  base URL
     base_url = 'https://www.olx.pl/motoryzacja/samochody'
 
-    # search query parameters - specify additional info of interest
+    # search query parameters - specify additional points of interest/narrow down your search
     params = {
         "page": 1,
         "price_to": "search[filter_float_price%3Ato]=20000",
@@ -37,7 +44,7 @@ class OlxScraper(scrapy.Spider):
 
     #  custom download settings
     custom_settings = {
-         # uncomment to set accordingly
+         # Set accordingly. Advise: do not shorten delay for those websites.
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
         "DOWNLOAD_TIMEOUT": 2  # 2 s of delay
     }
@@ -66,7 +73,10 @@ class OlxScraper(scrapy.Spider):
 
     #  general crawler
     def start_requests(self):
-
+        """Initiates crawling. Yields a scrapy request -> redirects to list view with brand/model instance,
+        then calls in parse_links on the request.
+        :return: yields a request to url with the list of offers, for each car in the input file.
+        Then, makes a callback to parse_links method."""
         #  init filename
         # filename = './output/Moto_Crawler_OLX_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
@@ -90,6 +100,9 @@ class OlxScraper(scrapy.Spider):
 
     #  parse car links
     def parse_links(self, res):
+        """Extracts url of all listed offers, including pagination, calls in parse_listing on each offer URL.
+        :return: yields url for the offer and calls parse_listing method."""
+
         #  extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')
@@ -139,6 +152,11 @@ class OlxScraper(scrapy.Spider):
             pass
 
     def parse_listing(self, res):
+        """Extracts information from listing (offer) details.
+        On success, yields a Scrapy MotoCrawlerItem instance,
+        which is then processed by the DatabasePipeline.
+        :return: custom Scrapy MotoCrawlerItem, which is then fed into DatabasePipeline"""
+
         # extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')

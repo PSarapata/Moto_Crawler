@@ -10,6 +10,8 @@ class MotoCrawlerUserCreate(APIView):
     Registers new User.
     Anyone is allowed to use this view, however view
     only accepts data sent by POST requests.
+    :return: New user instance and HTTP_201_CREATED response
+    or HTTP_400_BAD_REQUEST when unsuccessful.
     """
     permission_classes = (permissions.AllowAny,)
     authentication_classes = ()
@@ -28,6 +30,7 @@ class HelloWorldView(APIView):
     """
     Simple Test View, displaying a pseudo-dictionary key-value pair 'hello: world'.
     Comes in handy when testing authentication-related issues. Sits under 'hello/' endpoint.
+    :return: pseudo-dict{"hello":"world"} & HTTP_200_OK response
     """
     def get(self, request):
         return Response(data={"hello": "world"}, status=status.HTTP_200_OK)

@@ -3,6 +3,7 @@ from authentication.models import MotoCrawlerUser
 
 
 class MotoCrawlerUserAdmin(admin.ModelAdmin):
+    """Registers admin user, based on custom MotoCrawlerUser model."""
     model = MotoCrawlerUser
 
 

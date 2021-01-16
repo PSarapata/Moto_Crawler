@@ -6,6 +6,7 @@ from scrapy.crawler import CrawlerProcess
 # I had some problem with imports, you might not need it
 import repackage
 repackage.up()
+# Import custom Scrapy item, which then gets fed into pipelines for processing:
 from items import MotocrawlerItem
 
 
@@ -19,7 +20,7 @@ class SprzedajemyScraper(scrapy.Spider):
     #  base URL
     base_url = 'https://sprzedajemy.pl/motoryzacja/samochody-osobowe'
 
-    # search query parameters - specify brand and model
+    # search query parameters - pagination on this website is based on offset.
     params = {
         "offset": 0
     }
@@ -61,7 +62,10 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  general crawler
     def start_requests(self):
-
+        """Initiates crawling. Yields a scrapy request -> redirects to list view with brand/model instance,
+        then calls in parse_links on the request.
+        :return: yields a request to url with the list of offers, for each car in the input file.
+        Then, makes a callback to parse_links method."""
         #  init filename
         # filename = './output/Moto_Crawler_Sprzedajemy_' + datetime.datetime.today().strftime('%Y-%m-%d-%H-%M') + '.json'
 
@@ -82,6 +86,9 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  parse car links
     def parse_links(self, res):
+        """Extracts url of all listed offers, including pagination, calls in parse_listing on each offer URL.
+        :return: yields url for the offer and calls parse_listing method."""
+
         #  extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')
@@ -101,7 +108,7 @@ class SprzedajemyScraper(scrapy.Spider):
                 'count': count}, callback=self.parse_listing)
 
         try:
-            #  handle pagination
+            #  handle pagination --> change offset to set how many cars per page to display
             self.current_offset += 30
             try:
                 total_cars = int(res.css('div.cntItemCounter').css('strong::text').get().split('-')[1])
@@ -129,6 +136,11 @@ class SprzedajemyScraper(scrapy.Spider):
 
     #  parse car listings
     def parse_listing(self, res):
+        """Extracts information from listing (offer) details.
+        On success, yields a Scrapy MotoCrawlerItem instance,
+        which is then processed by the DatabasePipeline.
+        :return: custom Scrapy MotoCrawlerItem which is then fed into DatabasePipeline"""
+
         # extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')

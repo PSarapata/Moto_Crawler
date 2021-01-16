@@ -1,10 +1,11 @@
-import psycopg2
+# import psycopg2
 
 from api.models import Offer, Photo, OfferPhoto
-from core.helpers.test_connect import hostname, username, password, database
+# from core.helpers.test_connect import hostname, username, password, database
 
 
 class DatabasePipeline(object):
+    """Scrapy custom pipeline, manages spider-database data flow."""
     # pass
     # def open_spider(self, spider):
     #     self.connection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
@@ -15,6 +16,10 @@ class DatabasePipeline(object):
     #     self.connection.close()
 
     def process_item(self, item, spider):
+        """Checks whether the Scrapy item produced by spider already exists in database.
+        If it exists - skips and moves on to process another.
+        If item does not exist - maps Scrapy item onto Django Offer, Photo and OfferPhoto
+        models and saves new instances in the database."""
         # psycopg2 and raw SQL approach
         # self.cur.execute("""INSERT INTO API_OFFER(URL, BRAND, MODEL, TITLE, PRICE, DESCRIPTION) VALUES(%s, %s, %s, %s,
         # %s, %s);""", (item['url'], item['brand'], item['model'], item['title'], item['price'], item['description']))
