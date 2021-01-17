@@ -92,7 +92,7 @@ class SprzedajemyScraper(scrapy.Spider):
         #  extract forwarded data
         brand = res.meta.get('brand')
         model = res.meta.get('model')
-        filename = res.meta.get('filename')
+        # filename = res.meta.get('filename')
         count = res.meta.get('count')
 
         #  print Verbose debug info

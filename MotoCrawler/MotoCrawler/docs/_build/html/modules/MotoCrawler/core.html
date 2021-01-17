@@ -89,11 +89,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../about-motocrawler.html">About MotoCrawler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about-author.html">Author</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Core</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#django-settings">Django Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#motocrawler-s-urls">MotoCrawler’s URLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#celery">Celery</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="spiders.html">Spiders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project-root.html">Project Root</a></li>
 </ul>
 
             
@@ -163,6 +170,120 @@
             
   <div class="section" id="core">
 <h1>Core<a class="headerlink" href="#core" title="Permalink to this headline">¶</a></h1>
+<p>Core is the source of Django MotoCrawler project. This is where you will find the all-so-important settings.py file.
+You might also be interested with urls.py, which lists all endpoints available in the application, and celery.py,
+hosting custom Celery settings.</p>
+<div class="section" id="django-settings">
+<h2>Django Settings<a class="headerlink" href="#django-settings" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+    <span class="s1">&#39;django_extensions&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;api&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rest_framework&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;corsheaders&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;authentication&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;rest_framework_simplejwt.token_blacklist&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django_filters&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>These are all applications added on top of the django’s defaults. Note that django_filters are currently not being
+used in the project.</p>
+<p>Because the project is using Django CorsHeaders, be sure to include this in your MiddleWare:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;corsheaders.middleware.CorsMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="c1"># ...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Exactly in the position shown above.</p>
+<p>Furthemore, you need to allow origin of the FrontEnds that will be consuming the project’s API.
+As the project is being run locally, that is localhost on port 3000:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># CorsHeaders</span>
+<span class="n">CORS_ALLOWED_ORIGINS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;http://localhost:3000&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>MotoCrawler is using SimpleJWT token authentication, hence it is prudent to specify few settings for those tokens to
+work as intended:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># JWT TOKEN SETTINGS (AUTHENTICATION)</span>
+<span class="n">SIMPLE_JWT</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ACCESS_TOKEN_LIFETIME&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+    <span class="s1">&#39;REFRESH_TOKEN_LIFETIME&#39;</span><span class="p">:</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">14</span><span class="p">),</span>
+    <span class="s1">&#39;ROTATE_REFRESH_TOKENS&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;BLACKLIST_AFTER_ROTATION&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;ALGORITHM&#39;</span><span class="p">:</span> <span class="s1">&#39;HS256&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SIGNING_KEY&#39;</span><span class="p">:</span> <span class="n">SECRET_KEY</span><span class="p">,</span>
+    <span class="s1">&#39;VERIFYING_KEY&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="s1">&#39;AUTH_HEADER_TYPES&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;JWT&#39;</span><span class="p">,),</span>
+    <span class="s1">&#39;USER_ID_FIELD&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;USER_ID_CLAIM&#39;</span><span class="p">:</span> <span class="s1">&#39;user_id&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;AUTH_TOKEN_CLASSES&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;rest_framework_simplejwt.tokens.AccessToken&#39;</span><span class="p">,),</span>
+    <span class="s1">&#39;TOKEN_TYPE_CLAIM&#39;</span><span class="p">:</span> <span class="s1">&#39;token_type&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice the use of Django’s secret key as a signing key. It is important that it does not get compromised, otherwise
+User’s data would be at risk.</p>
+<p>Since MotoCrawler project is based on RESTful API, those settings come in handy. Pagination and project-level
+permissions are purely voluntary (You could go for <em>IsAuthenticatedOrReadOnly</em> instead), however if we want to run JWT
+tokens, <em>‘DEFAULT_AUTHENTICATION_CLASSES’</em> step should not be ommitted:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># REST FRAMEWORK SETTINGS</span>
+<span class="n">REST_FRAMEWORK</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;DEFAULT_PAGINATION_CLASS&#39;</span><span class="p">:</span> <span class="s1">&#39;rest_framework.pagination.LimitOffsetPagination&#39;</span><span class="p">,</span>
+    <span class="c1"># LIMIT RESULTS PER PAGE TO 100 ITEMS</span>
+    <span class="s1">&#39;PAGE_SIZE&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="c1"># PROJECT-WIDE PERMISSIONS - LIMIT VIEWS TO AUTHENTICATED USERS ONLY. CAN BE OVERRIDDEN ON VIEW LEVEL.</span>
+    <span class="s1">&#39;DEFAULT_PERMISSION_CLASSES&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;rest_framework.permissions.IsAuthenticated&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="c1"># AUTHENTICATION UTILIZES JWT TOKENS</span>
+    <span class="s1">&#39;DEFAULT_AUTHENTICATION_CLASSES&#39;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s1">&#39;rest_framework_simplejwt.authentication.JWTAuthentication&#39;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, a reminder: don’t forget to specify a <strong>database</strong> for your project. MotoCrawler is ran on <strong>PostgreSQL</strong>,
+however with some changes, it should be possible to run it with a different SQL engine.</p>
+</div>
+<div class="section" id="motocrawler-s-urls">
+<h2>MotoCrawler’s URLS<a class="headerlink" href="#motocrawler-s-urls" title="Permalink to this headline">¶</a></h2>
+<p>Here’s a list of all available endpoints:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MotoCrawler Endpoints:</span>
+
+<span class="sd">        admin/</span>
+<span class="sd">        api/ &lt;int:pk&gt;/ [name=&#39;detailview&#39;]</span>
+<span class="sd">        api/ [name=&#39;listview&#39;]</span>
+<span class="sd">        api/ photos/ [name=&#39;photolistview&#39;]</span>
+<span class="sd">        api/ photos/&lt;int:pk&gt;/ [name=&#39;photodetailview&#39;]</span>
+<span class="sd">        api/ offerphotos/&lt;int:pk&gt;/ [name=&#39;offerphotos&#39;]</span>
+<span class="sd">        api/ user/logout/blacklist/ [name=&#39;blacklist&#39;]</span>
+<span class="sd">        api/ search/ [name=&#39;offersearch&#39;]</span>
+<span class="sd">        api/ user/create/ [name=&#39;create_user&#39;]</span>
+<span class="sd">        api/ token/obtain/ [name=&#39;token_create&#39;]</span>
+<span class="sd">        api/ token/refresh/ [name=&#39;token_refresh&#39;]</span>
+<span class="sd">        api/ hello/ [name=&#39;hello_world&#39;]</span>
+<span class="sd">        ^favourites/$ [name=&#39;favourite_offers-list&#39;]</span>
+<span class="sd">        ^favourites\.(?P&lt;format&gt;[a-z0-9]+)/?$ [name=&#39;favourite_offers-list&#39;]</span>
+<span class="sd">        ^favourites/(?P&lt;pk&gt;[^/.]+)/$ [name=&#39;favourite_offers-detail&#39;]</span>
+<span class="sd">        ^favourites/(?P&lt;pk&gt;[^/.]+)\.(?P&lt;format&gt;[a-z0-9]+)/?$ [name=&#39;favourite_offers-detail&#39;]</span>
+<span class="sd">        ^$ [name=&#39;api-root&#39;]</span>
+<span class="sd">        ^\.(?P&lt;format&gt;[a-z0-9]+)/?$ [name=&#39;api-root&#39;]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="celery">
+<h2>Celery<a class="headerlink" href="#celery" title="Permalink to this headline">¶</a></h2>
+<p><em>Currently unsupported</em></p>
+</div>
 </div>
 
 

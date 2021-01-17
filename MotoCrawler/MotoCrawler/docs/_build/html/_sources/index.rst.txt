@@ -19,3 +19,4 @@ Welcome to MotoCrawler's documentation!
    modules/MotoCrawler/commands.rst
    modules/MotoCrawler/core.rst
    modules/MotoCrawler/spiders.rst
+   modules/MotoCrawler/project-root.rst

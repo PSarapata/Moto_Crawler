@@ -1,3 +1,5 @@
+.. _getting_started:
+
 Getting Started
 ===============
 
@@ -11,7 +13,7 @@ First thing you need to know before we start, is that MotoCrawler has a project-
 
 Let's suppose you are trying to access the
 
-BASE URL
+Base URL
 --------
 
 This is the main resource of MotoCrawler, the list of scraped car offers:
@@ -106,7 +108,7 @@ Simply follow the steps in next subsection and your screen should then show some
             {...}
     }
 
-AUTHENTICATION
+Authentication
 --------------
 Authentication in MotoCrawler is utilizing simple JWT tokens. First, register yourself, by POSTing your user data to
 

@@ -27,7 +27,7 @@ class OfferPhotoSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     """Serializer for Offer database objects.
     Besides displaying all relevant Offer object attributes,
-    it is also displays all related Photo instances
+    it also displays all related Photo instances
     using photo_urls StringRelatedField in read-only mode,
     'many=True' flag is used to display the entire set."""
     photo_urls = serializers.StringRelatedField(many=True, source="offerphoto_set.all", read_only=True)

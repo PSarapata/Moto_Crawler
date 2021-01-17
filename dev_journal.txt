@@ -82,7 +82,20 @@ I have tested this using Postman and it actually works as expected! I can now fo
 the project and write some tests. Once I'm done with that, I will finish React side of things.
 
 15.01.2021 20:03
----------------
+----------------
 Developer's journal added along with some docstrings. Depending how much time I can salvage I should finish
 project's documentation and unit tests in the next few days, then move back on to React and implement Favourite offers.
 (Back End API already has full functionality on those).
+
+17.01.2021 00:20
+----------------
+ Some more docstrings, first tests, and docs catalogue were added. I am slowly building up projects' documentation there
+ with the help of Sphinx theme. You can have a read through the docs by firing off
+
+ "firefox _build/html/index.html"
+
+from terminal, while in /docs directory.
+
+17.01.2021 14:45
+----------------
+Documentation finished. You can view it using the command above. It may actually come in handy, be sure to try it out!

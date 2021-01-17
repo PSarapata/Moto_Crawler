@@ -89,11 +89,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../about-motocrawler.html">About MotoCrawler</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../about-author.html">Author</a></li>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motocrawleruser">MotoCrawlerUser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#views">Views</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
 <li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spiders.html">Spiders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project-root.html">Project Root</a></li>
 </ul>
 
             
@@ -163,6 +172,67 @@
             
   <div class="section" id="authentication">
 <h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<p>Authentication is MotoCrawler’s submodule. It defines a custom MotoCrawlerUser model and hosts rest framework’s
+simple JWT access and refresh token related endpoints.</p>
+<p>If you are struggling to authenticate yourself, take a step back to <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">Getting Started</span></a> section.</p>
+<div class="section" id="models">
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="motocrawleruser">
+<h3>MotoCrawlerUser<a class="headerlink" href="#motocrawleruser" title="Permalink to this headline">¶</a></h3>
+<p>This is the authorized user model for MotoCrawler project, as defined in Django’s settings file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom user model for authentication:</span>
+<span class="n">AUTH_USER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;authentication.MotoCrawlerUser&quot;</span>
+</pre></div>
+</div>
+<p><strong>Attributes</strong></p>
+<p>Besides all the standard inherited fields from the generic Django AbstractUser, it defines a Many-To-Many relation
+with API’s Offer resource:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="c1"># MotoCrawlerUser extends from base Django user. I used it for authentication, following this tutorial:</span>
+<span class="c1"># &quot;https://hackernoon.com/110percent-complete-jwt-authentication-with-django-and-react-2020-iejq34ta&quot;</span>
+<span class="c1"># I then had an idea to create a relation so a user can store/watch his favourite offers:</span>
+<span class="k">class</span> <span class="nc">MotoCrawlerUser</span><span class="p">(</span><span class="n">AbstractUser</span><span class="p">):</span>
+    <span class="n">favourite_offers</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="s2">&quot;api.Offer&quot;</span><span class="p">,</span> <span class="n">through</span><span class="o">=</span><span class="s2">&quot;api.UserFavouriteOffer&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="views">
+<h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
+<p>As mentioned, authentication hosts majority of token-related endpoints, but also a very simple “Hello-World” View,
+built with testing in mind.</p>
+<p><strong>Endpoints</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>api/ user/create/</em> –&gt; register (create) a new MotoCrawlerUser</p></li>
+<li><p><em>api/ token/obtain/</em> –&gt; get a pair of <strong>access</strong> and <strong>refresh</strong> tokens</p></li>
+<li><p><em>api/ token/refresh/</em> –&gt; get a new <strong>access</strong> token (access tokens expire after 5 minutes!)</p></li>
+<li><p><em>api/ user/logout/blacklist/</em> –&gt; blacklist User’s tokens.</p></li>
+<li><p><em>api/ hello/</em> –&gt; test “hello world” view</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>Permissions</strong></dt><dd><ul class="simple">
+<li><p><em>api/ user/create/ == AllowAny</em></p></li>
+<li><p><em>api/ token/obtain/ == Allows POST requests with a dictionary of “username” and “password” key/value pairs</em></p></li>
+<li><p><em>api/ token/refresh/ == Allows POST requests with a dictionary of “refresh” token key/value, returns fresh tokens</em></p></li>
+<li><p><em>api/ user/logout/blacklist/ == AllowAny, allows POST request with “refresh_token” key/value, returns
+RESET_CONTENT_205 response on success</em></p></li>
+<li><p><em>api / hello/ == IsAuthenticated</em></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>HelloWorld</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloWorldView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple Test View, displaying a pseudo-dictionary key-value pair &#39;hello: world&#39;.</span>
+<span class="sd">    Comes in handy when testing authentication-related issues. Sits under &#39;hello/&#39; endpoint.</span>
+<span class="sd">    :return: pseudo-dict{&quot;hello&quot;:&quot;world&quot;} &amp; HTTP_200_OK response</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;hello&quot;</span><span class="p">:</span> <span class="s2">&quot;world&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
