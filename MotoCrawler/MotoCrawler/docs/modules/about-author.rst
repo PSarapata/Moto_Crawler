@@ -2,8 +2,7 @@
     Author
 ##############
 
-My name is Pawel Sarapata and I am the single developer wannabe behind
-MotoCrawler.
+My name is Pawel Sarapata and I am the developer wannabe behind MotoCrawler.
 I started being serious about programming in 2020, I started in Back End engineering with Python and Django, however
 as you can see, I am slowly exploring Front-End integration, and am hoping to become a FullStack web developer at
 some point in the future.

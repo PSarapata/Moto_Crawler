@@ -30,7 +30,7 @@ for better import management, and will not be covered.
 Items.py
 --------
 Items file is a host to Scrapy's Item objects, which are very similar to Django's models and in fact, are mapped onto
-instances of those items, by `Pipelines <Pipelines.py>`_.
+instances of those items, by `Pipelines.py`_
 
 Manage.py
 ---------
