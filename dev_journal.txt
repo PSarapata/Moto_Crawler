@@ -99,3 +99,8 @@ from terminal, while in /docs directory.
 17.01.2021 14:45
 ----------------
 Documentation finished. You can view it using the command above. It may actually come in handy, be sure to try it out!
+
+18.01.2021 19:40
+----------------
+Tests covering most important functionalities have just been added. Tests rely on custom-made fixtures, populating test
+database with fake data, therefore they provide quite complex checks.

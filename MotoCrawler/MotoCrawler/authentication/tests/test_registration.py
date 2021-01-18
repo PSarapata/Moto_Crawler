@@ -1,0 +1,1 @@
+"""Test registration for MotoCrawlerUsers"""

@@ -25,7 +25,7 @@ def api_client():
     return client
 
 
-@pytest.fixture()
+@pytest.fixture
 def make_offer():
     """Create an Offer instance for tests"""
 
@@ -33,4 +33,26 @@ def make_offer():
                                  title=fakeCar.vehicle_year_make_model(),
                                  price=faker.random_number(digits=5, fix_len=True),
                                  description=fakeCar.vehicle_year_make_model_cat())
-    yield offer
+    return offer
+
+
+def make_photos():
+    """Returns a tuple of Photo instances for testing."""
+    photos = []
+
+    def create_sample_photos(count=5):
+        for number in range(count):
+            photo = Photo.objects.create(url=faker.url())
+            photos.append(photo)
+        return photos
+    return create_sample_photos()
+
+
+@pytest.fixture
+def make_offerphoto_relation(make_offer):
+    photos = make_photos()
+    offer_photo_objects = []
+    for instance in photos:
+        offerphoto = OfferPhoto.objects.create(offer=Offer.objects.first(), photo=instance)
+        offer_photo_objects.append(offerphoto)
+    return offer_photo_objects

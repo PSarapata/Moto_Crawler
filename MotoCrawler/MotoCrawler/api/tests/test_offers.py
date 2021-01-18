@@ -57,3 +57,30 @@ def test_offer_content(api_client):
     response = api_client.get(url)
     data = json.loads(response.content.decode())
     assert len(data["results"]) >= 1
+
+
+@pytest.mark.django_db
+@pytest.mark.usefixtures('make_offer')
+def test_offer_details(api_client):
+    """
+    Ensure that our user can access offer details page and is able to find all relevant information there.
+    Data is a dictionary, hence assertion to see if all expected keys can be found in the response.
+    """
+
+    offer_detail_url = reverse('detailview', args=[2])
+    response = api_client.get(offer_detail_url)
+    data = json.loads(response.content.decode())
+    expected_keys = {
+        'id',
+        'url',
+        'brand',
+        'model',
+        'title',
+        'price',
+        'description',
+        'photo_urls'
+    }
+
+    assert response.status_code == status.HTTP_200_OK
+    assert data["id"] == 2
+    assert all(key in data for key in expected_keys)
