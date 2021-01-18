@@ -33,7 +33,7 @@ class ManageFavouriteOfferPermission(BasePermission):
 
 class OfferList(generics.ListAPIView):
     """
-    Simple list view for Offer objects.
+    Simple read-only list view for Offer objects.
     IsAuthenticated project permission applies.
     """
     queryset = Offer.objects.all()
@@ -51,7 +51,7 @@ class OfferDetail(generics.RetrieveDestroyAPIView):
 
 class PhotoList(generics.ListAPIView):
     """
-    Simple list view for Photo objects.
+    Simple read-only list view for Photo objects.
     IsAuthenticated project permission applies.
     """
     queryset = Photo.objects.all()
@@ -69,7 +69,7 @@ class PhotoDetail(generics.RetrieveDestroyAPIView):
 
 class OfferPhotosList(generics.ListAPIView):
     """
-    Custom list View for related Offer-Photo instances.
+    Custom read-only list View for related Offer-Photo instances.
     View feeds on Primary Key of an Offer instance and returns
     serialized list of related Offer-Photo objects.
     IsAuthenticated project permission applies.
