@@ -7,11 +7,9 @@ and utilizing ReactJS Front End.
 ### Developer's journal
 I am now working on documentation, therefore README will also undergo a large redecoration.
 If you are interested in the whole development process of MotoCrawler, have a read through Developer's Journal
-here: [MotoCrawler Dev Journal](https://github.com/PSarapata/Moto_Crawler/blob/main/dev_journal.txt)
+here: [MotoCrawler's Dev Journal](https://github.com/PSarapata/Moto_Crawler/blob/main/dev_journal.txt)
 
 ### Documentation, How-To?
-Once you've copied the code onto your machine, go into docs/ directory and open the index page in your browser.
+MotoCrawler's documentation is hosted on GitHub Pages, here:
 
-*If you're a Firefox user, open up your terminal window in ***docs/*** directory and execute the following:*
-
-`firefox _build/html/index.html`
+[View MotoCrawler's documentation](https://psarapata.github.io/Moto_Crawler/)
