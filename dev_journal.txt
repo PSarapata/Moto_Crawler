@@ -104,3 +104,7 @@ Documentation finished. You can view it using the command above. It may actually
 ----------------
 Tests covering most important functionalities have just been added. Tests rely on custom-made fixtures, populating test
 database with fake data, therefore they provide quite complex checks.
+
+19.01.2021 21:30
+----------------
+Moved docs/ directory to the highest level of the app, hoping to host documentation on GitHub Pages. Fingers crossed. 
