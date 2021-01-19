@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Spiders &mdash; MotoCrawler  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Project Root" href="project-root.html" />
+    <link rel="prev" title="Core" href="core.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MotoCrawler
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about-motocrawler.html">About MotoCrawler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about-author.html">Author</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Spiders</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-optional">Output (optional)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Spiders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-parameters">base parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#init">init</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-requests">start_requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-links">parse_links</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parse-listing">parse_listing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#return">return</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#run-py">Run.py</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="project-root.html">Project Root</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MotoCrawler</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Spiders</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/modules/MotoCrawler/spiders.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="spiders">
+<h1>Spiders<a class="headerlink" href="#spiders" title="Permalink to this headline">¶</a></h1>
+<p>This module hosts logic responsible for data collection in MotoCrawler. Four custom crawlers, based on Scrapy’s
+Spider class crawl different websites in search of car offers, based on json input file with specified brand/model
+key-values.</p>
+<p>This section will give you an overview on what a single spider does - there are only minor differences between each
+spider’s operating principles.</p>
+<div class="section" id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s take a look at how a model input file (consumed by spiders) should look like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;brand&quot;</span><span class="p">:</span> <span class="s2">&quot;Mitsubishi&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Eclipse&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;brand&quot;</span><span class="p">:</span> <span class="s2">&quot;Mitsubishi&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;3000-GT&quot;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nt">&quot;brand&quot;</span><span class="p">:</span> <span class="s2">&quot;Mazda&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;MX-5&quot;</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Simple list of brand/model dictionary objects.</p>
+</div>
+<div class="section" id="output-optional">
+<h2>Output (optional)<a class="headerlink" href="#output-optional" title="Permalink to this headline">¶</a></h2>
+<p>If filename references in a spider is uncommented, data could be stored locally in a .json file. The result would be
+a list of objects similar to the one below:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;62335682&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://sprzedajemy.pl/mitsubishi-eclipse-2006r-paniowki-2-6bea9f-nr62335682&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;brand&quot;</span><span class="p">:</span> <span class="s2">&quot;Mitsubishi&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Eclipse&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Mitsubishi Eclipse 2006r.&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;city&quot;</span><span class="p">:</span> <span class="s2">&quot;Pani\u00f3wki&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;voivodship&quot;</span><span class="p">:</span> <span class="s2">&quot;\u015bl\u0105skie&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;22 990 z\u0142&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contact_seller&quot;</span><span class="p">:</span> <span class="s2">&quot;PHONE_NUMBER_HERE&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;image_urls&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/c0/24/d4/mitsubishi-eclipse-2006r-paniowki-533175890.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/00/d2/68/mitsubishi-eclipse-2006r-elektrochrom-lusterko-wst-paniowki-533175891.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/c9/36/21/mitsubishi-eclipse-2006r-eclipse-533175892.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/92/46/ae/mitsubishi-eclipse-2006r-lakier-metallic-paniowki-sprzedam-533175893.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/8f/d6/57/mitsubishi-eclipse-2006r-esp-eclipse-slaskie-paniowki-533175894.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/32/30/d1/mitsubishi-eclipse-2006r-benzyna-paniowki-sprzedam-533175895.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/00/6d/37/mitsubishi-eclipse-2006r-szyberdach-paniowki-sprzedam-533175896.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/49/55/67/mitsubishi-eclipse-2006r-533175897.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/3d/05/47/mitsubishi-eclipse-2006r-paniowki-533175898.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/f0/5d/97/mitsubishi-eclipse-2006r-paniowki-sprzedam-533175899.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/8e/e2/91/mitsubishi-eclipse-2006r-zarejestrowany-w-polsce-slaskie-paniowki-533175900.jpg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;https://thumbs.img-sprzedajemy.pl/1000x901c/07/8c/4e/mitsubishi-eclipse-2006r-benzyna-paniowki-533175901.jpg&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;full_description&quot;</span><span class="p">:</span> <span class="s2">&quot;MITSUBISHI ECLIPSE 2006r.\nSprowadzony do Polski w 2011r.\nW Kraju 2 w\u0142a\u015bciciel.\nLicznik podany w MILACH 66 993 w przybli\u017ceniu na 108ty\u015b. KM\nSamoch\u00f3d w dobrym stanie technicznym oraz wizualnym.\nMo\u017cliwo\u015b\u0107 kompleksowego sprawdzenia samochodu przed zakupem.\n\nPrzyjmujemy samochody w rozliczeniu.\n\nOferujemy zakupu auta bez wychodzenia z domu,\nZ dostaw\u0105 pod wskazany adres.\n\nAtrakcyjna oferta finansowania z kredytem 5% taniej.\nMo\u017cliwo\u015b\u0107 za\u0142atwienia wszystkich formalno\u015bci na miejscu, podczas jednej wizyty !!!\n\nKupuj\u0105cy zwolniony z op\u0142aty skarbowej.\n\nZapraszamy.\n\n439/20&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;extra_info&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;klimatyzacja&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sk\u00f3rzana tapicerka&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;centralny zamek&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elektryczne szyby&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wspomaganie kierownicy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ABS&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ESP&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;poduszka powietrzna&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;szyberdach&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elektryczne lusterka&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;aluminiowe felgi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;podgrzewane fotele&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;radio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;immobilizer&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lakier metallic&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ASR (kontrola trakcji)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CD&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;elektrochrom. lusterko wst.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;isofix&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;zmieniarka CD&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mo\u017cliwa zamiana&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Zarejestrowany w Polsce&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;manufacturing_year&quot;</span><span class="p">:</span> <span class="s2">&quot;2006&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;mileage&quot;</span><span class="p">:</span> <span class="s2">&quot;108000&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;engine_capacity&quot;</span><span class="p">:</span> <span class="s2">&quot;3828&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;power&quot;</span><span class="p">:</span> <span class="s2">&quot;263&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gearbox&quot;</span><span class="p">:</span> <span class="s2">&quot;manualna&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Spiders<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Let’s have a closer look at what a spider actually does.</p>
+<div class="section" id="base-parameters">
+<h3>base parameters<a class="headerlink" href="#base-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SprzedajemyScraper</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Spider for scraping Polish automotive website, offers two output options - stores offers either in json file</span>
+<span class="sd">    or save in your database. Simply uncomment filename references if you prefer the first option.&quot;&quot;&quot;</span>
+    <span class="c1">#  spider name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;sprzedajemy&#39;</span>
+
+    <span class="c1">#  base URL</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="s1">&#39;https://sprzedajemy.pl/motoryzacja/samochody-osobowe&#39;</span>
+
+    <span class="c1"># search query parameters - pagination on this website is based on offset.</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>This is how you initate Spider class’ attributes. Spider name and base URL should be self-explanatory. Pass in
+any additional data to params if you wish to narrow down your search. Simply paste them to a URL in one of the
+following class methods, as you would in a browser.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  headers</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Mozilla/5.0 (iPad; CPU OS 8_0_2 like Mac OS X; en-US) AppleWebKit/534.37.6 (KHTML, like Gecko) Version/4.0.5 Mobile/8B116 Safari/6534.37.6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;referer&quot;</span><span class="p">:</span> <span class="n">base_url</span>
+<span class="p">}</span>
+
+<span class="c1">#  custom download settings</span>
+<span class="n">custom_settings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">#  uncomment to set accordingly</span>
+    <span class="s2">&quot;CONCURRENT_REQUESTS_PER_DOMAIN&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;DOWNLOAD_TIMEOUT&quot;</span><span class="p">:</span> <span class="mi">1</span>  <span class="c1"># 1 s of delay</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The above is particularly important due to security reasons (and is considered good taste, you don’t want to overload
+the website!). First, identify yourself using headers and referer. Second, use custom download settings to limit the
+rate at which you hit the website for data. <strong>DO NOT</strong> make it too short, or you <strong>WILL GET BANNED</strong>. Trust me. This
+may even have legal consequences, so just don’t.</p>
+</div>
+<div class="section" id="init">
+<h3>init<a class="headerlink" href="#init" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  current offset</span>
+<span class="n">current_offset</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1">#  car (brand, model) tuple list</span>
+<span class="n">cars</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># write data to JSONL file</span>
+<span class="c1"># with open(filename, &#39;a&#39;) as f:</span>
+<span class="c1">#     f.write(json.dumps(features, indent=4) + &#39;\n&#39;)</span>
+
+<span class="c1"># write data to Database</span>
+<span class="n">motocrawler_item</span> <span class="o">=</span> <span class="n">MotocrawlerItem</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">],</span>
+    <span class="n">brand</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;brand&#39;</span><span class="p">],</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">],</span>
+    <span class="n">title</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span>
+    <span class="n">price</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span>
+    <span class="n">description</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;full_description&#39;</span><span class="p">),</span>
+    <span class="n">photos</span><span class="o">=</span><span class="n">features</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;image_urls&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="k">yield</span> <span class="n">motocrawler_item</span>
+
+<span class="c1">#  constructor initializer</span>
+<span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1">#  init car content</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1">#  read cars file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./input/input.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="n">line</span>
+
+    <span class="c1">#  init car (brand, model) list</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;brand&#39;</span><span class="p">],</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>This block of code initiates the offset (pagination) and cars list, then reads the input json dictionary (see
+<a class="reference internal" href="#input">Input</a> section above), then saves it in the mentioned cars list.</p>
+</div>
+<div class="section" id="start-requests">
+<h3>start_requests<a class="headerlink" href="#start-requests" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">start_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initiates crawling. Yields a scrapy request -&gt; redirects to list view with brand/model instance,</span>
+<span class="sd">    then calls in parse_links on the request.</span>
+<span class="sd">    :return: yields a request to url with the list of offers, for each car in the input file.</span>
+<span class="sd">    Then, makes a callback to parse_links method.&quot;&quot;&quot;</span>
+    <span class="c1">#  init filename</span>
+    <span class="c1"># filename = &#39;./output/Moto_Crawler_Sprzedajemy_&#39; + datetime.datetime.today().strftime(&#39;%Y-%m-%d-%H-%M&#39;) + &#39;.json&#39;</span>
+
+    <span class="c1">#  brands count</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1">#  loop over cars (brands/models)</span>
+    <span class="k">for</span> <span class="n">brand</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cars</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">next_car</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">brand</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">model</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">next_car</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;brand&#39;</span><span class="p">:</span> <span class="n">brand</span><span class="p">,</span>
+            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+            <span class="c1"># &#39;filename&#39;: filename,</span>
+            <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">count</span>
+        <span class="p">},</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_links</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>As per docstring information. Should you choose to receive a different <a class="reference internal" href="#output-optional">Output (optional)</a> format, uncomment
+filename references.</p>
+</div>
+<div class="section" id="parse-links">
+<h3>parse_links<a class="headerlink" href="#parse-links" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  parse car links</span>
+<span class="k">def</span> <span class="nf">parse_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts url of all listed offers, including pagination, calls in parse_listing on each offer URL.</span>
+
+<span class="sd">    :return: yields url for the offer and calls parse_listing method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parse-listing">
+<h3>parse_listing<a class="headerlink" href="#parse-listing" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#  parse car listings</span>
+<span class="k">def</span> <span class="nf">parse_listing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">res</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts information from listing (offer) details.</span>
+<span class="sd">    On success, yields a Scrapy MotoCrawlerItem instance,</span>
+<span class="sd">    which is then processed by the DatabasePipeline.</span>
+
+<span class="sd">    :return: custom Scrapy MotoCrawlerItem which is then fed into DatabasePipeline</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="return">
+<h3>return<a class="headerlink" href="#return" title="Permalink to this headline">¶</a></h3>
+<p>Spiders allow two output formats, they either produce (<strong>yield</strong>) a custom Scrapy item, called MotoCrawlerItem, or
+write scraped offer data to a locally stored .json file. Simply uncomment the lines to use the latter. (I would also
+recommend commenting out the yield).</p>
+<p>If you are interested in what happens with MotoCrawlerItem afterwards, have a read through <a class="reference internal" href="project-root.html#project-root"><span class="std std-ref">Project Root</span></a>
+section (Pipelines).</p>
+</div>
+</div>
+<div class="section" id="run-py">
+<h2>Run.py<a class="headerlink" href="#run-py" title="Permalink to this headline">¶</a></h2>
+<p>run.py is an inconspicuous python script sitting in <strong>spiders/</strong> module. It is actually a python one liner to fire
+off all spiders one-by-one. Simply <em>open your terminal in spiders/ directory</em> and execute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python run.py
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="project-root.html" class="btn btn-neutral float-right" title="Project Root" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="core.html" class="btn btn-neutral float-left" title="Core" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pawel Sarapata.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

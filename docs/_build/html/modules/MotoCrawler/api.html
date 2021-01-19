@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API &mdash; MotoCrawler  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Authentication" href="authentication.html" />
+    <link rel="prev" title="Getting Started" href="getting-started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MotoCrawler
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about-motocrawler.html">About MotoCrawler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about-author.html">Author</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#offer">Offer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#photos">Photos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#offerphoto">OfferPhoto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#userfavouriteoffer">UserFavouriteOffer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spiders.html">Spiders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project-root.html">Project Root</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MotoCrawler</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/modules/MotoCrawler/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>If core is the heart of MotoCrawler, API is its’ brain. This is where the magic happens, and majority of
+most seeked-after resources sit in API’s views.</p>
+<p>If you are having trouble viewing API’s resources, familiarise yourself with <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">Getting Started</span></a> section.</p>
+<div class="section" id="models">
+<h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<p>API defines 4 django class models:</p>
+<div class="section" id="offer">
+<h3>Offer<a class="headerlink" href="#offer" title="Permalink to this headline">¶</a></h3>
+<p>Offer resource is a single instance of a car advert scraped from one of the source car selling websites.</p>
+<dl class="simple">
+<dt><strong>Endpoints</strong></dt><dd><ul class="simple">
+<li><p>/api/ –&gt; API’s main view, list of all offers from the database</p></li>
+<li><p>/api/:id/ –&gt; detailed single offer view</p></li>
+<li><p>/api/ search/ –&gt; Offer search view, searching must “start_with” your phrase and scans offers for matching
+<strong>brand</strong> or <strong>model</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>pk</em> : int - Unique Identifier</p></li>
+<li><p><em>url</em> : string - URL of the offer</p></li>
+<li><p><em>brand</em> : string - brand of the car being the offer’s subject</p></li>
+<li><p><em>model</em> : string - model of the car being the subject of the offer</p></li>
+<li><p><em>title</em> : string - offer’s title</p></li>
+<li><p><em>price</em> : string - price in a format specified by the car website. It may differ between offers!</p></li>
+<li><p><em>description</em> : string - offer’s textual description, usually providing detailed information about the
+advertised car.</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>Permissions</strong></dt><dd><p><em>IsAuthenticated</em></p>
+</dd>
+</dl>
+<p>If you are interested in how to authenticate your requests within MotoCrawler, please read the <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">Getting Started</span></a>
+section.</p>
+<p><strong>Search Fields</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>brand</strong></p></li>
+<li><p><strong>model</strong></p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>Relations</strong></dt><dd><ul class="simple">
+<li><p><strong>Offer – Photo</strong></p></li>
+<li><p><strong>Offer – MotoCrawlerUser</strong></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="photos">
+<h3>Photos<a class="headerlink" href="#photos" title="Permalink to this headline">¶</a></h3>
+<p>Photo resource is a single photograph, tied to the offer by a foreign key.</p>
+<dl class="simple">
+<dt><strong>Endpoints</strong></dt><dd><ul class="simple">
+<li><p>api/ photos/  –&gt; Lists all available Photo resources</p></li>
+<li><p>api/ photos/:pk/ –&gt; Access a single Photo resource view</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>pk</em> : int - Primary Key of a Photo resource</p></li>
+<li><p><em>offer</em> : int - Foreign Key of the Offer</p></li>
+<li><p><em>url</em> : string - URL of a Photo resource</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>Permissions</strong></dt><dd><p><em>IsAuthenticated</em></p>
+</dd>
+<dt><strong>Relations</strong></dt><dd><ul class="simple">
+<li><p><strong>Photo – Offer</strong></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="offerphoto">
+<h3>OfferPhoto<a class="headerlink" href="#offerphoto" title="Permalink to this headline">¶</a></h3>
+<p>OfferPhoto is an auxiliary resource, its’ purpose it to link Offer and Photo instances.</p>
+<dl class="simple">
+<dt><strong>Endpoints</strong></dt><dd><ul class="simple">
+<li><p>api/ offerphotos/:pk&gt;/ –&gt; Lists all photos related to a particular Offer resource. <strong>The PK sent to this
+endpoint is one of the Offer!</strong></p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>pk</em> : int – Primary Key of OfferPhoto resource</p></li>
+<li><p><em>offer</em> : int – Foreign Key to the Offer instance</p></li>
+<li><p><em>photo</em> : int – Foreign Key to the Photo instance</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>Permissions</strong></dt><dd><p><em>IsAuthenticated</em></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="userfavouriteoffer">
+<h3>UserFavouriteOffer<a class="headerlink" href="#userfavouriteoffer" title="Permalink to this headline">¶</a></h3>
+<p>This one is a blast. It links your Authenticated User with his/hers favourite offers. Views are based on
+django_rest_framework’s custom ModelViewSets, and since it might be a bit tricky to figure it out, the code for this
+is included below.</p>
+<dl class="simple">
+<dt><strong>Endpoints</strong></dt><dd><ul class="simple">
+<li><p>^favourites/$ –&gt; Lists User’s favourite offers.</p></li>
+<li><p>^favourites/(?P&lt;pk&gt;[^/.]+)/$ –&gt; Details of a single related (favourite) offer.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>Attributes</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>pk</em> : int – Primary Key of FavouriteUserOffer resource</p></li>
+<li><p><em>offer</em> : int – Foreign Key of the Offer instance</p></li>
+<li><p><em>user</em> : int – Foreign Key of the MotoCrawlerUser instance</p></li>
+<li><p><em>timestamp</em> : datetime – “Created at” field, gives an indication on when the offer was added as favourites.</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Code</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">UserFavouriteOfferViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Custom Viewset to manage User-FavouriteOffers relation.</span>
+<span class="sd">    ManageFavouriteOfferPermission applies:</span>
+<span class="sd">    User has to be authenticated and a holder of a matching User Foreign Key</span>
+<span class="sd">    to be able to use this view.&quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">ManageFavouriteOfferPermission</span><span class="p">]</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">FavouriteOfferSerializer</span>
+
+    <span class="c1">#  Retrieve/Update/Destroy, get a single item based on related object&#39;s ID.</span>
+    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pk&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">UserFavouriteOffer</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># List only Offers related to authenticated User.</span>
+    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">get_list_or_404</span><span class="p">(</span><span class="n">UserFavouriteOffer</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>Permissions</strong></dt><dd><p><em>ManageFavouriteOfferPermission</em></p>
+</dd>
+</dl>
+<p>The custom permission applies to this view. Have a look through its’ code below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ManageFavouriteOfferPermission</span><span class="p">(</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Custom Permission limiting object modifications on an object</span>
+<span class="sd">    to its&#39; legitimate owner user only.</span>
+<span class="sd">    Returns true if the User Primary Key passed along with the request matches</span>
+<span class="sd">    the User Foreign Key of UserFavouriteOffer instance.</span>
+<span class="sd">    User has to be authenticated.</span>
+
+<span class="sd">    :param: request: HTTP request</span>
+<span class="sd">    :type request: request: HTTP request</span>
+<span class="sd">    :param: view: Used on :class: &#39;UserFavouriteOfferViewSet&#39; ModelViewSet.</span>
+<span class="sd">    :type view: class: &#39;UserFavouriteOfferViewSet&#39;</span>
+<span class="sd">    :param: obj: Authorized User database object (model)</span>
+<span class="sd">    :obj type: object: &#39;MotoCrawlerUser&#39;</span>
+<span class="sd">    :return: Boolean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;Viewing favourite offers is only allowed for their owner.&#39;</span>
+
+    <span class="k">def</span> <span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">pk</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>Relations</strong></dt><dd><ul class="simple">
+<li><p><strong>MotoCrawlerUser – Offer</strong></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting-started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pawel Sarapata.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
