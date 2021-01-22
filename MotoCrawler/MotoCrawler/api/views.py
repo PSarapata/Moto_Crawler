@@ -86,8 +86,7 @@ class OfferPhotosList(generics.ListAPIView):
 
 class BlacklistTokenView(APIView):
     """
-    View is used to blacklist expired JWT refresh tokens
-    and issue the user a fresh one.
+    View blacklists refresh tokens.
     If everything went as expected = returns HTTP_205_RESET_CONTENT
     Else = returns HTTP_400_BAD_REQUEST
     View is accessible by anyone.

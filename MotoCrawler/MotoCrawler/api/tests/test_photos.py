@@ -25,7 +25,8 @@ def test_offerphoto_view(api_client):
     """Ensures view is accessible by authenticated user, data is in expected format and at least 5 test objects were
     created by the fixture."""
 
-    offerphotos_url = reverse('offerphotos', args=[3])
+    offer = Offer.objects.first()
+    offerphotos_url = reverse('offerphotos', args=[offer.pk])
     response = api_client.get(offerphotos_url)
     data = json.loads(response.content.decode())
 

@@ -27,13 +27,26 @@ def api_client():
 
 @pytest.fixture
 def make_offer():
-    """Create an Offer instance for tests"""
+    """Create a single Offer instance for tests"""
 
     offer = Offer.objects.create(url=faker.url(), brand=fakeCar.vehicle_make(), model=fakeCar.vehicle_model(),
                                  title=fakeCar.vehicle_year_make_model(),
                                  price=faker.random_number(digits=5, fix_len=True),
                                  description=fakeCar.vehicle_year_make_model_cat())
     return offer
+
+
+@pytest.fixture()
+def make_more_offers(count=5):
+    """Create a couple Offer instances for tests"""
+    offers = []
+    for offer in range(count):
+        offer = Offer.objects.create(url=faker.url(), brand=fakeCar.vehicle_make(), model=fakeCar.vehicle_model(),
+                                     title=fakeCar.vehicle_year_make_model(),
+                                     price=faker.random_number(digits=5, fix_len=True),
+                                     description=fakeCar.vehicle_year_make_model_cat())
+        offers.append(offer)
+    return offers
 
 
 def make_photos():
@@ -56,3 +69,14 @@ def make_offerphoto_relation(make_offer):
         offerphoto = OfferPhoto.objects.create(offer=Offer.objects.first(), photo=instance)
         offer_photo_objects.append(offerphoto)
     return offer_photo_objects
+
+
+@pytest.fixture
+def make_useroffer_relation(make_more_offers):
+    user = MotoCrawlerUser.objects.get_or_create(username='john', email='js@js.com')[0]
+    offers = Offer.objects.all()[:5]
+    favourites = []
+    for offer in offers:
+        favourite_offer = UserFavouriteOffer.objects.create(offer=offer, user=user)
+        favourites.append(favourite_offer)
+    return favourites

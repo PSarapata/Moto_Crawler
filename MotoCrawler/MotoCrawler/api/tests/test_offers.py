@@ -4,6 +4,8 @@ from rest_framework.test import APIClient
 import pytest
 import json
 
+from api.models import Offer
+
 
 @pytest.mark.django_db
 def test_project_permissions():
@@ -67,7 +69,8 @@ def test_offer_details(api_client):
     Data is a dictionary, hence assertion to see if all expected keys can be found in the response.
     """
 
-    offer_detail_url = reverse('detailview', args=[2])
+    offer = Offer.objects.first()
+    offer_detail_url = reverse('detailview', args=[offer.pk])
     response = api_client.get(offer_detail_url)
     data = json.loads(response.content.decode())
     expected_keys = {
@@ -82,5 +85,5 @@ def test_offer_details(api_client):
     }
 
     assert response.status_code == status.HTTP_200_OK
-    assert data["id"] == 2
+    assert data["id"] == offer.pk
     assert all(key in data for key in expected_keys)

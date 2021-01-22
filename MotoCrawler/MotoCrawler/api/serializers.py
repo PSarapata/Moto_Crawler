@@ -43,6 +43,6 @@ class FavouriteOfferSerializer(serializers.ModelSerializer):
     of related Offer instance.
     'depth=1' flag was used to achieve this."""
     class Meta:
-        exclude = 'user'
+        exclude = ('user',)
         model = UserFavouriteOffer
         depth = 1
