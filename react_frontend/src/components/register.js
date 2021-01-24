@@ -41,6 +41,9 @@ export default function Register() {
 	});
 
 	const [formData, updateFormData] = useState(initialFormData);
+	let [usernameErrs, setUsernameErr] = useState('');
+	let [emailErrs, setEmailErr] = useState('');
+	let [passwordErrs, setPasswordErr] = useState('');
 
 	const handleChange = (e) => {
 		updateFormData({
@@ -51,22 +54,75 @@ export default function Register() {
 	};
 
 	const handleSubmit = (e) => {
+		usernameErrs = ''
+		emailErrs = ''
+		passwordErrs = ''
+
 		e.preventDefault();
 		console.log(formData);
 
-		axiosInstance
-			.post(`user/create/`, {
-				email: formData.email,
-				username: formData.username,
-				password: formData.password,
-			})
-			.then((res) => {
-				history.push('/login');
-				alert("Account has been created, you can now log in!")
-				console.log(res);
-				console.log(res.data);
-			});
+		if (validateForm()) {
+			axiosInstance
+				.post(`user/create/`, {
+					email: formData.email,
+					username: formData.username,
+					password: formData.password,
+				})
+				.then((res) => {
+					history.push('/login');
+					alert("Account has been created, you can now log in!")
+					console.log(res);
+					console.log(res.data);
+				});
+		}
 	};
+
+	const validateForm = () => {
+		let formIsValid = true
+		let username = formData.username
+		let email = formData.email
+		let password = formData.password
+
+		if (!username) {
+			formIsValid = false
+			setUsernameErr(usernameErrs + '*Please enter your username.\n')
+		}
+
+		if (username) {
+			if (!username.match(/^\w+$/)) {
+				formIsValid = false
+				setUsernameErr(usernameErrs + '*Only alphanumeric characters are allowed.\n')
+			}
+		}
+
+		if (!email) {
+			formIsValid = false
+			setEmailErr(emailErrs + '*Please enter your email.\n')
+		}
+
+		if (email) {
+			let pattern = new RegExp(/^(('[\w-\s]+')|([\w-]+(?:\.[\w-]+)*)|('[\w-\s]+')([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+			if (!pattern.test(email)) {
+				formIsValid = false
+				setEmailErr(emailErrs + '*Please enter valid email\n')
+			}
+		}
+
+		if (!password) {
+			formIsValid = false
+			setPasswordErr(passwordErrs + '*Please enter your password.\n')
+		}
+
+		if (password) {
+			if (!password.match(new RegExp("^(?=.*[a-z])(?=.*[0-9])(?=.{6,})"))) {
+				formIsValid = false
+				setPasswordErr(passwordErrs + '*Password must contain alphanumeric characters, minimum length 6.\n')
+			}
+		}
+
+		return formIsValid
+	}
+
 
 	const classes = useStyles();
 
@@ -91,6 +147,7 @@ export default function Register() {
 								autoComplete="email"
 								onChange={handleChange}
 							/>
+							<div className='errorMsg' style={{color: "red"}}>{emailErrs}</div>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
@@ -103,6 +160,7 @@ export default function Register() {
 								autoComplete="username"
 								onChange={handleChange}
 							/>
+							<div className='errorMsg' style={{color: "red"}}>{usernameErrs}</div>
 						</Grid>
 						<Grid item xs={12}>
 							<TextField
@@ -116,6 +174,7 @@ export default function Register() {
 								autoComplete="current-password"
 								onChange={handleChange}
 							/>
+							<div className='errorMsg' style={{color: "red"}}>{passwordErrs}</div>
 						</Grid>
 					</Grid>
 					<Button
