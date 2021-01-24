@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import {IconButton} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -36,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     flexGrow: 1,
+  },
+  alignCardButtons: {
+    display: 'flex',
+    alignItems: 'right',
+    justifyContent: 'space-between'
   },
 }));
 
@@ -93,17 +100,17 @@ export default function Offers(props) {
                       { offer.price }
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  <CardActions className={classes.alignCardButtons}>
                     <Button size="small" color="primary">
                       <Link color="inherit" href={offer.url}>
                         View
                       </Link>
                     </Button>
-                    <Button size="small" color="primary">
-                      <Link color="inherit" href={`http://localhost:8000/api/${offer.id}`}>
-                        Edit
+                    <IconButton aria-label="add to favorites">
+                      <Link color="inherit" href={`http://localhost:8000/favourites/`}>
+                        <FavoriteIcon style={{color: 'deepskyblue'}}/>
                       </Link>
-                    </Button>
+                    </IconButton>
                   </CardActions>
                 </Card>
               </Grid>
