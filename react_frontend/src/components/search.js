@@ -47,10 +47,8 @@ const Search = () => {
 
 	useEffect(() => {
 		axiosInstance.get(search + '/' + window.location.search).then((res) => {
-			console.log(res.data, "heeeeelllloooooo");
 			const allOffers = res.data.results;
 			setAppState({ offers: allOffers });
-			console.log(res.data, "hello from axios");
 		});
 	}, [setAppState]);
 

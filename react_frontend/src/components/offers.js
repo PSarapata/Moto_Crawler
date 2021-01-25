@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {IconButton} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +49,15 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Offers(props) {
+
+  const handleFavourite = () => {
+    console.log('I shall create a user-favouriteoffer relation.')
+  }
+
+  const handleOfferDeletion = () => {
+    console.log('I shall delete an offer (maybe it was outdated?).')
+  }
+
   const { offers } = props;
   const classes = useStyles();
   if (!offers || offers.length === 0) return <div>Apologies, there is an issue... Possible options are:
@@ -81,11 +91,17 @@ export default function Offers(props) {
             {offers.results.map((offer) => (
               <Grid item key={offer.id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image={offer.photo_urls[0]}
-                    title={`${offer.brand} ${offer.model}`}
-                  />
+                  <Link
+                    color="textPrimary"
+                    href={offer.url}
+                    className={classes.link}
+                    >
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={offer.photo_urls[0]}
+                      title={`${offer.brand} ${offer.model}`}
+                    />
+                  </Link>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       { offer.title }...
@@ -108,7 +124,12 @@ export default function Offers(props) {
                     </Button>
                     <IconButton aria-label="add to favorites">
                       <Link color="inherit" href={`http://localhost:8000/favourites/`}>
-                        <FavoriteIcon style={{color: 'deepskyblue'}}/>
+                        <FavoriteIcon style={{color: 'firebrick'}}/>
+                      </Link>
+                    </IconButton>
+                    <IconButton aria-label="delete">
+                      <Link href={`http://localhost:8000/api/${offer.id}/`}>
+                        <DeleteIcon style={{color: 'cornflowerblue'}}/>
                       </Link>
                     </IconButton>
                   </CardActions>

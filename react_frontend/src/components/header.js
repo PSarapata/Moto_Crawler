@@ -12,6 +12,7 @@ import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import SearchBar from 'material-ui-search-bar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import StarsIcon from '@material-ui/icons/Stars';
 import Chip from '@material-ui/core/Chip';
 import {emphasize} from "@material-ui/core";
 
@@ -26,7 +27,19 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 	},
     breadcrumb: {
-        padding: `20px`,
+        paddingRight: `20px`,
+    },
+    activeFavourites: {
+        backgroundColor: 'whitesmoke',
+        color: "primary",
+        fontWeight: theme.typography.fontWeightBold,
+            '&:hover, &:focus': {
+        backgroundColor: 'lightskyblue'
+        },
+        '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: 'cyan'
+        },
     }
 }));
 
@@ -35,7 +48,7 @@ const StyledBreadcrumb = withStyles((theme) => ({
     backgroundColor: theme.palette.grey[100],
     height: theme.spacing(3),
     color: theme.palette.grey[800],
-    fontWeight: theme.typography.fontWeightRegular,
+    fontWeight: theme.typography.fontWeightBold,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300],
     },
@@ -47,6 +60,7 @@ const StyledBreadcrumb = withStyles((theme) => ({
 }))(Chip);
 
 function Header() {
+    let favourites;
     const classes = useStyles();
     let history = useHistory();
     const [data, setData] = useState({ search: '' });
@@ -58,6 +72,25 @@ function Header() {
         });
         window.location.reload();
     };
+
+    if (localStorage.getItem('Username')) {
+        favourites =
+            <Link
+                component={NavLink}
+                to="/favourites">
+                <Breadcrumbs className={classes.breadcrumb}>
+
+                    <Chip label="Favourites" icon={<StarsIcon style={{fill: 'green', fontSize: "avatarSmall"}}/>} className={classes.activeFavourites}/>
+
+                </Breadcrumbs>
+            </Link>
+    } else {
+        favourites =
+            <Breadcrumbs className={classes.breadcrumb}>
+                <StyledBreadcrumb label="Favourites" icon={<StarsIcon fontSize="avatarSmall"/>}/>
+            </Breadcrumbs>
+    }
+
     return (
         <React.Fragment>
             <CssBaseline/>
@@ -75,7 +108,6 @@ function Header() {
                             underline="none"
                             color="inherit"
                         >
-
                             MotoCrawler
                         </Link>
                     </Typography>
@@ -85,9 +117,10 @@ function Header() {
                             label= {`Current User:${localStorage.getItem('Username')
                                         ? " " + localStorage.getItem('Username')
                                         : "Anonymous"}`}
-                            icon={<AccountCircleIcon fontSize="small" />}
+                            icon={<AccountCircleIcon style={{fontSize: 'avatarSmall', fill: 'cornflowerblue'}} />}
                           />
                         </Breadcrumbs>
+                        {favourites}
                     </Typography>
                     <SearchBar
 						value={data.search}

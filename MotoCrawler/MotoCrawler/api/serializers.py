@@ -42,6 +42,11 @@ class FavouriteOfferSerializer(serializers.ModelSerializer):
     of related UserFavouriteOffer instance and all attributes
     of related Offer instance.
     'depth=1' flag was used to achieve this."""
+    def create(self, validated_data):
+        print("Hello from create method of FavouriteOfferSerializer.")
+        return UserFavouriteOffer.objects.create(**validated_data)
+    photo_urls = serializers.StringRelatedField(many=True, source="offer.offerphoto_set.all")
+
     class Meta:
         exclude = ('user',)
         model = UserFavouriteOffer

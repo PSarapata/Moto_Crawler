@@ -11,6 +11,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import Hello from "./components/hello";
 import Search from "./components/search"
+import Favourites from "./components/favourites/favourites";
 
 const routing = (
     <Router>
@@ -23,6 +24,7 @@ const routing = (
                 <Route path="/logout" component={SignOut} />
                 <Route path="/hello" component={Hello} />
                 <Route path="/search" component={Search} />
+                <Route path="/favourites" component={Favourites}/>
             </Switch>
             <Footer />
         </React.StrictMode>
