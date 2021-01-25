@@ -2,12 +2,12 @@
 My CodersLab final project, car selling websites web scraper built with Scrapy and Celery, using Django RESTful API 
 and utilizing ReactJS Front End.
 
-HomePage                   |  LoginPage
+HomePage                                                  |  LoginPage
 :-------------------------------------------------------:|:----------------------------------------------:
 ![MotoCrawlerHomePage](https://snipboard.io/OkDHWI.jpg)  |  ![MotoCrawlerLoginPage](https://snipboard.io/XQDLtz.jpg)
-CloseUp                |  Favourites
-|
+CloseUp                                                  |  Favourites
 ![MotoCrawlerCarCards](https://snipboard.io/Fn6hzH.jpg)  |  ![MotoCrawlerFavourites](https://snipboard.io/h9TVfC.jpg)
+
 
 ### Prerequisites
 You will find requirements.txt file in projects' root. Main technologies used:
