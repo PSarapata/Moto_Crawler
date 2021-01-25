@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework import serializers
 
 from .models import Offer, Photo, OfferPhoto, UserFavouriteOffer
@@ -43,9 +44,18 @@ class FavouriteOfferSerializer(serializers.ModelSerializer):
     of related Offer instance.
     'depth=1' flag was used to achieve this."""
     def create(self, validated_data):
-        print("Hello from create method of FavouriteOfferSerializer.")
-        return UserFavouriteOffer.objects.create(**validated_data)
-    photo_urls = serializers.StringRelatedField(many=True, source="offer.offerphoto_set.all")
+        """Overwrites Serializer's create method - creates relation User-FavouriteOffer based on request data."""
+        user = None
+        request = self.context.get("request")
+        if request and hasattr(request, "user"):
+            user = request.user
+        if request and hasattr(request, "data"):
+            offer = request.data["data"]["offer"]
+            offer_instance = Offer.objects.get(pk=offer)
+
+        return UserFavouriteOffer.objects.create(user=user, offer=offer_instance, **validated_data)
+
+    photo_urls = serializers.StringRelatedField(many=True, source="offer.offerphoto_set.all", read_only=True)
 
     class Meta:
         exclude = ('user',)

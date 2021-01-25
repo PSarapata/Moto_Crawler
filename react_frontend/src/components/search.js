@@ -9,6 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
+import {IconButton} from "@material-ui/core";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -35,6 +40,11 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'left',
 		marginBottom: theme.spacing(2),
 	},
+    alignCardButtons: {
+    	display: 'flex',
+    	alignItems: 'right',
+    	justifyContent: 'space-between'
+    },
 }));
 
 const Search = () => {
@@ -51,6 +61,32 @@ const Search = () => {
 			setAppState({ offers: allOffers });
 		});
 	}, [setAppState]);
+
+	const handleAddToFavourites = async (offer_id) => {
+		console.log('Creating a user-favouriteoffer relation...')
+		await axiosInstance.post('favourites/',{data: {
+		  offer: offer_id,
+		  }}, {baseURL: 'http://localhost:8000'})
+		.then((res) => {
+			console.log(res);
+			console.log('###### Offer moved to favourites! ######')
+		  window.location.reload();
+		}).catch(err => {
+		  console.log(err);
+		});
+	}
+
+	const handleDeleteOffer = async (offer_id) => {
+		console.log('####### Sending delete request for offer: ', offer_id, ' ##########');
+		await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
+		{
+		  console.log(res);
+		  console.log('####### Offer has been deleted. ########');
+		  window.location.reload();
+		}).catch(err => {
+		  console.log(err);
+		});
+	}
 
 	return (
 		<React.Fragment>
@@ -80,17 +116,28 @@ const Search = () => {
 										>
 											{offer.title.substr(0, 50)}...
 										</Typography>
-										<div className={classes.offerText}>
-											<Typography color="textSecondary">
-												{offer.description
-													? offer.description.substr(0, 40)
-													: "No description"}...
-											</Typography>
-											<Typography style={{fontWeight:'bold'}}>
-											  { offer.price }
-											</Typography>
-										</div>
+										<Typography color="textSecondary">
+											{offer.description
+												? offer.description.substr(0, 40)
+												: "No description"}...
+										</Typography>
+										<Typography style={{fontWeight:'bold'}}>
+										  { offer.price }
+										</Typography>
 									</CardContent>
+									<CardActions className={classes.alignCardButtons}>
+										<Button size="small" color="primary">
+										  <Link color="inherit" href={offer.url}>
+											View
+										  </Link>
+										</Button>
+										<IconButton aria-label="add to favorites" onClick={() => handleAddToFavourites(offer.id)}>
+											<FavoriteIcon style={{color: 'firebrick'}}/>
+										</IconButton>
+										<IconButton aria-label="delete" onClick={() => handleDeleteOffer(offer.id)}>
+											<DeleteIcon style={{color: 'cornflowerblue'}}/>
+										</IconButton>
+								  </CardActions>
 								</Card>
 							</Grid>
 						);
@@ -99,5 +146,5 @@ const Search = () => {
 			</Container>
 		</React.Fragment>
 	);
-};
+}
 export default Search;

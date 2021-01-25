@@ -10,7 +10,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import CardActions from "@material-ui/core/CardActions";
 import {IconButton} from "@material-ui/core";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,10 +58,45 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         marginRight: theme.spacing(2),
     },
+	unsubOnHover: {
+        '&:hover, &:focus': {
+        backgroundColor: 'lightsteelblue'
+        },
+        '&:active': {
+        boxShadow: theme.shadows[1],
+        backgroundColor: 'dimgray'
+        },
+	}
 
 }));
 
 const Favourites = () => {
+
+	const handleUnfavourite = async (fav_id) => {
+		console.log('I shall remove this offer from your favourites...')
+		await axiosInstance.delete(`favourites/${fav_id}`, {baseURL: 'http://localhost:8000', data:{pk: `${fav_id}`}}).then((res) =>
+		{
+		  console.log(res);
+		  console.log('####### Relation deleted. ########');
+		  window.location.reload();
+		}).catch(err => {
+		  console.log(err);
+		});
+  	}
+
+	const handleDeleteOffer = async (offer_id) => {
+		console.log('Your offer shall be deleted...');
+		await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
+		{
+		  console.log(res);
+		  console.log('####### BEGONE!!! ##########')
+		  console.log('####### Offer has been deleted. ########');
+		  window.location.reload();
+		}).catch(err => {
+		  console.log(err);
+		});
+	}
+
 	const classes = useStyles();
 	const [appState, setAppState] = useState({
 		favouriteOffers: [],
@@ -115,15 +150,11 @@ const Favourites = () => {
 											</Typography>
 									</CardContent>
                                     <CardActions className={classes.alignCardButtons}>
-                                        <IconButton aria-label="unfavourite">
-                                          <Link color="inherit" href={`http://localhost:8000/favourites/`}>
-                                            <FavoriteBorderIcon style={{fill: 'black'}}/>
-                                          </Link>
+                                        <IconButton aria-label="unfavourite" onClick={() => handleUnfavourite(offer.id)} className={classes.unsubOnHover}>
+                                            <ClearIcon style={{fill: 'royalblue'}}/>
                                         </IconButton>
-                                        <IconButton aria-label="delete">
-                                          <Link href={`http://localhost:8000/api/${offer.id}/`}>
+                                        <IconButton aria-label="delete" onClick={() => handleDeleteOffer(offer.offer.id)}>
                                             <DeleteIcon style={{color: 'cornflowerblue'}}/>
-                                          </Link>
                                         </IconButton>
                                     </CardActions>
 								</Card>

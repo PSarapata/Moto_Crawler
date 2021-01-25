@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'whitesmoke',
         color: "primary",
         fontWeight: theme.typography.fontWeightBold,
-            '&:hover, &:focus': {
+        '&:hover, &:focus': {
         backgroundColor: 'lightskyblue'
         },
         '&:active': {

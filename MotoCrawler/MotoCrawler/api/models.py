@@ -24,7 +24,7 @@ class Photo(models.Model):
 
 class OfferPhoto(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    photo = models.ForeignKey(Photo, on_delete=models.CASCADE, unique=True)
+    photo = models.OneToOneField(Photo, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.photo.url

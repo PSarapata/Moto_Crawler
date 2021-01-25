@@ -13,6 +13,7 @@ import Link from '@material-ui/core/Link';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {IconButton} from "@material-ui/core";
+import axiosInstance from "../axios";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -50,12 +51,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Offers(props) {
 
-  const handleFavourite = () => {
-    console.log('I shall create a user-favouriteoffer relation.')
+  const handleAddToFavourites = async (offer_id) => {
+    console.log('Creating a user-favouriteoffer relation...')
+    await axiosInstance.post('favourites/',{data: {
+      offer: offer_id,
+      }}, {baseURL: 'http://localhost:8000'})
+    .then((res) => {
+        console.log(res);
+        console.log('###### Offer moved to favourites! ######')
+      window.location.reload();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
-  const handleOfferDeletion = () => {
-    console.log('I shall delete an offer (maybe it was outdated?).')
+  const handleDeleteOffer = async (offer_id) => {
+    console.log('####### Sending delete request for offer: ', offer_id, ' ##########');
+    await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
+    {
+      console.log(res);
+      console.log('####### Offer has been deleted. ########');
+      window.location.reload();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   const { offers } = props;
@@ -122,15 +141,11 @@ export default function Offers(props) {
                         View
                       </Link>
                     </Button>
-                    <IconButton aria-label="add to favorites">
-                      <Link color="inherit" href={`http://localhost:8000/favourites/`}>
+                    <IconButton aria-label="add to favorites" onClick={() => handleAddToFavourites(offer.id)}>
                         <FavoriteIcon style={{color: 'firebrick'}}/>
-                      </Link>
                     </IconButton>
-                    <IconButton aria-label="delete">
-                      <Link href={`http://localhost:8000/api/${offer.id}/`}>
+                    <IconButton aria-label="delete" onClick={() => handleDeleteOffer(offer.id)}>
                         <DeleteIcon style={{color: 'cornflowerblue'}}/>
-                      </Link>
                     </IconButton>
                   </CardActions>
                 </Card>
