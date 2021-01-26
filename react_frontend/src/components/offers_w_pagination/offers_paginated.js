@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
+    '&:hover, &:focus': {
+        cursor: 'url("https://findicons.com/files/icons/1050/pidgin_old_tango_smilies/24/car.png"), auto;'
+    },
   },
   cardContent: {
     flexGrow: 1,
@@ -158,8 +161,8 @@ function OffersPaginated() {
                         View
                       </Link>
                     </Button>
-                    <IconButton aria-label="add to favorites" onClick={() => handleAddToFavourites(offer.id)}>
-                        <FavoriteIcon style={{color: 'firebrick'}}/>
+                    <IconButton aria-label="add to favorites" id={`fav_${offer.id}`} onClick={() => handleAddToFavourites(offer.id)} style={{color: 'firebrick'}}>
+                        <FavoriteIcon/>
                     </IconButton>
                     <IconButton aria-label="delete" onClick={() => handleDeleteOffer(offer.id)}>
                         <DeleteIcon style={{color: 'cornflowerblue'}}/>

@@ -32,10 +32,10 @@ const handleDeleteOffer = async (offer_id) => {
     {
       console.log(res);
       console.log('####### Offer has been deleted. ########');
-      window.location.reload();
     }).catch(err => {
       console.log(err);
     });
+	window.location.reload();
 }
 
 export {handleAddToFavourites, handleUnfavourite, handleDeleteOffer};

@@ -1,4 +1,4 @@
-import datetime
+# import datetime
 import json
 import scrapy
 from scrapy.crawler import CrawlerProcess
@@ -38,7 +38,7 @@ class OlxScraper(scrapy.Spider):
 
     #  headers
     headers = {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 7_2_1 like Mac OS X; sl-SI) AppleWebKit/533.1.6 (KHTML, like Gecko) Version/3.0.5 Mobile/8B115 Safari/6533.1.6",
+        "User-Agent": "Opera/9.80 (Windows NT 5.1; U; cs) Presto/2.10.289 Version/12.02",
         "referer": base_url
     }
 
@@ -46,7 +46,7 @@ class OlxScraper(scrapy.Spider):
     custom_settings = {
          # Set accordingly. Advise: do not shorten delay for those websites.
         "CONCURRENT_REQUESTS_PER_DOMAIN": 1,
-        "DOWNLOAD_TIMEOUT": 2  # 2 s of delay
+        "DOWNLOAD_TIMEOUT": 0.95  # 0.95 s of delay
     }
 
     #  current page
@@ -175,7 +175,7 @@ class OlxScraper(scrapy.Spider):
 
                     'model': model,
 
-                    'image_urls': [photo for photo in res.css('ul#descGallery').css('a::attr(href)').getall()],
+                    'image_urls': [photo for photo in res.css('ul#bigGallery').css('a::attr(href)').getall()],
 
                     # Star means we also want the element's children.
 

@@ -15,19 +15,17 @@ import OffersPaginated from "./components/offers_w_pagination/offers_paginated";
 
 const routing = (
     <Router>
-        <React.StrictMode>
-            <Header />
-            <Switch>
-                <Route exact path="/" component = {OffersPaginated} />
-                <Route path="/register" component={Register} />
-                <Route path="/login" component={Login} />
-                <Route path="/logout" component={SignOut} />
-                <Route path="/hello" component={Hello} />
-                <Route path="/search" component={Search} />
-                <Route path="/favourites" component={Favourites}/>
-            </Switch>
-            <Footer />
-        </React.StrictMode>
+        <Header />
+        <Switch>
+            <Route exact path="/" component = {OffersPaginated} />
+            <Route path="/register" component={Register} />
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={SignOut} />
+            <Route path="/hello" component={Hello} />
+            <Route path="/search" component={Search} />
+            <Route path="/favourites" component={Favourites}/>
+        </Switch>
+        <Footer />
     </Router>
 );
 

@@ -4,6 +4,7 @@ from scrapy.crawler import CrawlerProcess
 
 from MotoCrawler.MotoCrawler.spiders import autoscout, mobile_de, olx, sprzedajemy
 
+
 app = Celery('tasks', broker='pyamqp://guest@localhost//')
 
 

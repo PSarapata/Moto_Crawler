@@ -119,3 +119,7 @@ button. Next up I will attempt to integrate spiders and run them at given times 
 Just added Front End pagination for homepage view. It defaults to 50 offers p/page, so it's independent from API
 pagination (100 items). Also changed data flow to use Axios with async for fetching paginated offers,
 thanks to which I said goodbye to 3-file data handling. Yay!
+
+27.01.2021 00:35
+----------------
+Implemented working carousel in favourite view. Tomorrow gonna spread it around to offers & search. Also found an article about conditional rendering of favourite status, should be able to render it on relations soon.

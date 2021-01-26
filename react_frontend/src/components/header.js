@@ -87,7 +87,7 @@ function Header() {
     } else {
         favourites =
             <Breadcrumbs className={classes.breadcrumb}>
-                <StyledBreadcrumb label="Favourites" icon={<StarsIcon fontSize="avatarSmall"/>}/>
+                <StyledBreadcrumb label="Favourites" icon={<StarsIcon style={{fontSize:"avatarSmall"}}/>}/>
             </Breadcrumbs>
     }
 

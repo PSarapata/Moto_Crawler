@@ -8,17 +8,22 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import CardActions from "@material-ui/core/CardActions";
-import {IconButton} from "@material-ui/core";
+import CardActions from '@material-ui/core/CardActions';
+import {Button, IconButton} from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from '@material-ui/icons/Delete';
+import Carousel from 'react-material-ui-carousel';
 import {handleUnfavourite} from '../helpers/button_handlers'
 import {handleDeleteOffer} from '../helpers/button_handlers'
+
 
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
 		paddingTop: '56.25%', // 16:9
+		'&:hover, &:focus': {
+			cursor: 'url("https://findicons.com/files/icons/1050/pidgin_old_tango_smilies/24/car.png"), auto;'
+		},
 	},
 	link: {
 		margin: theme.spacing(1, 1.5),
@@ -95,17 +100,24 @@ const Favourites = () => {
 						return (
 							<Grid item key={offer.id} xs={12} md={4}>
 								<Card className={classes.card}>
-									<Link
-										color="textPrimary"
-										href={offer.offer.url}
-										className={classes.link}
+									<Carousel
+										className="SecondExample"
+										autoPlay={false}
+										animation="fade"
+										timeout='200'
+										navButtonsAlwaysVisible='true'
 									>
-										<CardMedia
-											className={classes.cardMedia}
-											image={offer.photo_urls[0]}
-											title={`${offer.offer.brand} ${offer.offer.model}`}
-										/>
-									</Link>
+										{
+											offer.photo_urls.map((item, index) => {
+												return <CardMedia
+													key = {item}
+													className={classes.cardMedia}
+													image={offer.photo_urls[index]}
+													title={`${offer.offer.brand} ${offer.offer.model}`}
+												/>
+											})
+										}
+									</Carousel>
 									<CardContent className={classes.cardContent}>
 										<Typography
 											gutterBottom
@@ -120,17 +132,22 @@ const Favourites = () => {
 													? offer.offer.description.substr(0, 40)
 													: "No description"}...
 											</Typography>
-											<Typography style={{fontWeight:'bold'}}>
+											<Typography style={{fontWeight:'bold', textAlign: "center"}}>
 											  { offer.offer.price }
 											</Typography>
-											<Typography color="textSecondary">
+											<Typography color="textSecondary" style={{textAlign: "center"}}>
 												{ offer.timestamp.substr(0,16) }
 											</Typography>
 									</CardContent>
                                     <CardActions className={classes.alignCardButtons}>
-                                        <IconButton aria-label="unfavourite" onClick={() => handleUnfavourite(offer.id)} className={classes.unsubOnHover}>
+                                        <IconButton aria-label="unfavourite" onClick={() => handleUnfavourite(offer.id)} className={classes.unfavOnHover}>
                                             <ClearIcon style={{fill: 'royalblue'}}/>
                                         </IconButton>
+										<Button size="small" color="primary">
+										  <Link color="inherit" href={offer.offer.url}>
+											View
+										  </Link>
+										</Button>
                                         <IconButton aria-label="delete" onClick={() => handleDeleteOffer(offer.offer.id)}>
                                             <DeleteIcon style={{color: 'cornflowerblue'}}/>
                                         </IconButton>
