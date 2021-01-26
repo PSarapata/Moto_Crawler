@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import './App.css';
-import Offers from "./components/offers";
-import OfferLoadingComponent from './components/offerLoading'
-import axiosInstance from "./axios";
+import '../../App.css';
+import Offers from "./offers";
+import OfferLoadingComponent from './offerLoading'
+import axiosInstance from "../../axios";
+
 
 function App() {
     const OfferLoading = OfferLoadingComponent(Offers);
     const [appState, setAppState] = useState({
-        loading: false,
+        loading: true,
         offers: null,
     });
 

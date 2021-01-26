@@ -15,6 +15,9 @@ import {IconButton} from "@material-ui/core";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import {handleAddToFavourites} from './helpers/button_handlers'
+import {handleDeleteOffer} from './helpers/button_handlers'
+
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
 		paddingTop: '56.25%', // 16:9
@@ -61,32 +64,6 @@ const Search = () => {
 			setAppState({ offers: allOffers });
 		});
 	}, [setAppState]);
-
-	const handleAddToFavourites = async (offer_id) => {
-		console.log('Creating a user-favouriteoffer relation...')
-		await axiosInstance.post('favourites/',{data: {
-		  offer: offer_id,
-		  }}, {baseURL: 'http://localhost:8000'})
-		.then((res) => {
-			console.log(res);
-			console.log('###### Offer moved to favourites! ######')
-		  window.location.reload();
-		}).catch(err => {
-		  console.log(err);
-		});
-	}
-
-	const handleDeleteOffer = async (offer_id) => {
-		console.log('####### Sending delete request for offer: ', offer_id, ' ##########');
-		await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
-		{
-		  console.log(res);
-		  console.log('####### Offer has been deleted. ########');
-		  window.location.reload();
-		}).catch(err => {
-		  console.log(err);
-		});
-	}
 
 	return (
 		<React.Fragment>

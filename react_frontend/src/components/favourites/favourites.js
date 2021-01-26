@@ -12,6 +12,9 @@ import CardActions from "@material-ui/core/CardActions";
 import {IconButton} from "@material-ui/core";
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from "@material-ui/icons/Delete";
+import {handleUnfavourite} from '../helpers/button_handlers'
+import {handleDeleteOffer} from '../helpers/button_handlers'
+
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -58,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         marginRight: theme.spacing(2),
     },
-	unsubOnHover: {
+	unfavOnHover: {
         '&:hover, &:focus': {
         backgroundColor: 'lightsteelblue'
         },
@@ -71,31 +74,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Favourites = () => {
-
-	const handleUnfavourite = async (fav_id) => {
-		console.log('I shall remove this offer from your favourites...')
-		await axiosInstance.delete(`favourites/${fav_id}`, {baseURL: 'http://localhost:8000', data:{pk: `${fav_id}`}}).then((res) =>
-		{
-		  console.log(res);
-		  console.log('####### Relation deleted. ########');
-		  window.location.reload();
-		}).catch(err => {
-		  console.log(err);
-		});
-  	}
-
-	const handleDeleteOffer = async (offer_id) => {
-		console.log('Your offer shall be deleted...');
-		await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
-		{
-		  console.log(res);
-		  console.log('####### BEGONE!!! ##########')
-		  console.log('####### Offer has been deleted. ########');
-		  window.location.reload();
-		}).catch(err => {
-		  console.log(err);
-		});
-	}
 
 	const classes = useStyles();
 	const [appState, setAppState] = useState({

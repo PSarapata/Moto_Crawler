@@ -108,3 +108,14 @@ database with fake data, therefore they provide quite complex checks.
 19.01.2021 21:30
 ----------------
 Moved docs/ directory to the highest level of the app, hoping to host documentation on GitHub Pages. Fingers crossed. 
+
+25.01.2021 21:45
+----------------
+Front End is now integrated and handles deleting, adding and dropping "Favourite" status (relation) with a click of a
+button. Next up I will attempt to integrate spiders and run them at given times of the day.
+
+26.01.2021 19:35
+----------------
+Just added Front End pagination for homepage view. It defaults to 50 offers p/page, so it's independent from API
+pagination (100 items). Also changed data flow to use Axios with async for fetching paginated offers,
+thanks to which I said goodbye to 3-file data handling. Yay!

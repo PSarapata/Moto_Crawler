@@ -1,19 +1,25 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import DeleteIcon from '@material-ui/icons/Delete';
+import React, { useState, useEffect } from "react";
+import Box from "@material-ui/core/Box";
+import Pagination from "@material-ui/lab/Pagination";
+import {makeStyles} from "@material-ui/core/styles";
+import axiosInstance from "../../axios";
+import Link from "@material-ui/core/Link";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Button from "@material-ui/core/Button";
 import {IconButton} from "@material-ui/core";
-import axiosInstance from "../axios";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteIcon from "@material-ui/icons/Delete";
+import '../../App.css'
+import {handleAddToFavourites} from '../helpers/button_handlers'
+import {handleDeleteOffer} from '../helpers/button_handlers'
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -46,49 +52,60 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'right',
     justifyContent: 'space-between'
   },
+  centerBoxContent: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "40px",
+  },
 }));
 
+function OffersPaginated() {
+    const [offers, setOffers] = useState([]);
+    const [displayPerPage] = useState(50);
 
-export default function Offers(props) {
+    const [offset, setOffset] = useState(0);
+    const [count, setCount] = useState(0);
 
-  const handleAddToFavourites = async (offer_id) => {
-    console.log('Creating a user-favouriteoffer relation...')
-    await axiosInstance.post('favourites/',{data: {
-      offer: offer_id,
-      }}, {baseURL: 'http://localhost:8000'})
-    .then((res) => {
-        console.log(res);
-        console.log('###### Offer moved to favourites! ######')
-      window.location.reload();
-    }).catch(err => {
-      console.log(err);
-    });
-  }
+    const classes = useStyles();
 
-  const handleDeleteOffer = async (offer_id) => {
-    console.log('####### Sending delete request for offer: ', offer_id, ' ##########');
-    await axiosInstance.delete(`/${offer_id}`, {data:{pk: `${offer_id}`}}).then((res) =>
-    {
-      console.log(res);
-      console.log('####### Offer has been deleted. ########');
-      window.location.reload();
-    }).catch(err => {
-      console.log(err);
-    });
-  }
+    const handleChange = (event, value) => {
+        setOffset((value-1)*displayPerPage)
+    };
 
-  const { offers } = props;
-  const classes = useStyles();
-  if (!offers || offers.length === 0) return <div>Apologies, there is an issue... Possible options are:
-    <ul>
-      <li>Data is still being fetched</li>
-      <li>Database is empty</li>
-      <li>Server is down</li>
-      <li>You are not authenticated. Please <Link href="/login/">Login</Link>.</li>
-    </ul>
-    </div>
-  if (!offers.results) return <div>You are not authenticated. Please <Link href="/login/">Login</Link> to view offers.</div>
-  return (
+    const generateURL = (displayPerPage, offset) => {
+        let p = new URLSearchParams();
+        p.append('limit', displayPerPage || 50);
+        p.append('offset', offset || 0);
+        return('http://localhost:8000/api?' + p);
+    };
+
+    useEffect(() => {
+        async function retrieveOffers(displayPerPage) {
+        const res = await axiosInstance.get(generateURL(displayPerPage, offset))
+        const results = res.data
+        setOffers(results);
+        setCount(results.count);
+        setOffset(offset);
+    }
+        retrieveOffers().catch(e => {console.log(e)})
+    }, [offset])
+
+    if (!offers || offers.length === 0) return (
+    <Box className={classes.centerBoxContent}>
+        <div><b>Apologies, there is an issue... Possible options are:</b>
+            <ul>
+                <li>Data is still being fetched...</li>
+                <li>Database is empty</li>
+                <li>Server is down</li>
+                <li>You are not authenticated. Please <Link href="/login/">Login</Link>.</li>
+            </ul>
+        </div>
+    </Box>
+    );
+    if (!offers.results) return <div>You are not authenticated. Please <Link href="/login/">Login</Link> to view offers.</div>
+
+    return (
     <React.Fragment>
       <CssBaseline />
       <main>
@@ -108,7 +125,7 @@ export default function Offers(props) {
           {/* End hero unit */}
           <Grid container spacing={4}>
             {offers.results.map((offer) => (
-              <Grid item key={offer.id} xs={12} sm={6} md={4}>
+              <Grid item key={offer.id} xs={12} sm={6} md={4} id={offer.id}>
                 <Card className={classes.card}>
                   <Link
                     color="textPrimary"
@@ -153,7 +170,12 @@ export default function Offers(props) {
             ))}}
           </Grid>
         </Container>
+          <Box className={classes.centerBoxContent}>
+            <Pagination count={Math.ceil(count / displayPerPage)} color={"primary"} size="large" showFirstButton showLastButton onChange={handleChange}/>
+          </Box>
       </main>
     </React.Fragment>
-  );
+    );
 }
+
+export default OffersPaginated;
