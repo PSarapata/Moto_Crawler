@@ -101,7 +101,6 @@ const Favourites = () => {
 							<Grid item key={offer.id} xs={12} md={4}>
 								<Card className={classes.card}>
 									<Carousel
-										className="SecondExample"
 										autoPlay={false}
 										animation="fade"
 										timeout='200'

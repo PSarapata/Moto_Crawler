@@ -17,6 +17,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 import {handleAddToFavourites} from './helpers/button_handlers'
 import {handleDeleteOffer} from './helpers/button_handlers'
+import Carousel from "react-material-ui-carousel";
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -73,17 +74,23 @@ const Search = () => {
 						return (
 							<Grid item key={offer.id} xs={12} md={4}>
 								<Card className={classes.card}>
-									<Link
-										color="textPrimary"
-										href={offer.url}
-										className={classes.link}
+									<Carousel
+										autoPlay={false}
+										animation="fade"
+										timeout='200'
+										navButtonsAlwaysVisible='true'
 									>
-										<CardMedia
-											className={classes.cardMedia}
-											image={offer.photo_urls[0]}
-											title={`${offer.brand} ${offer.model}`}
-										/>
-									</Link>
+										{
+											offer.photo_urls.map((item, index) => {
+												return <CardMedia
+													key = {item}
+													className={classes.cardMedia}
+													image={offer.photo_urls[index]}
+													title={`${offer.brand} ${offer.model}`}
+												/>
+											})
+										}
+									</Carousel>
 									<CardContent className={classes.cardContent}>
 										<Typography
 											gutterBottom

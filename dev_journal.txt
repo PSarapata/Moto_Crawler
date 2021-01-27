@@ -122,4 +122,11 @@ thanks to which I said goodbye to 3-file data handling. Yay!
 
 27.01.2021 00:35
 ----------------
-Implemented working carousel in favourite view. Tomorrow gonna spread it around to offers & search. Also found an article about conditional rendering of favourite status, should be able to render it on relations soon.
+Implemented working carousel in favourite view. Tomorrow gonna spread it around to offers & search. Also found
+an article about conditional rendering of favourite status, should be able to render it on relations soon.
+
+27.01.2021 14:30
+----------------
+Carousel added to all views that display offer cards.
+Progress on MotoCrawler will significantly slow down now for some time, as I have other commitments, I will surely go
+back to it soon though.
