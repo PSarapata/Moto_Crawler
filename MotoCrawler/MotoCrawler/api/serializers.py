@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework import serializers
 
 from .models import Offer, Photo, OfferPhoto, UserFavouriteOffer

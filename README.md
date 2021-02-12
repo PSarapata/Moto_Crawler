@@ -8,7 +8,8 @@ HomePage                                                  |  LoginPage
 CloseUp                                                  |  Favourites
 ![MotoCrawlerCarCards](https://snipboard.io/Fn6hzH.jpg)  |  ![MotoCrawlerFavourites](https://snipboard.io/h9TVfC.jpg)
 
-
+## Video Presentation
+[![YoutubeLink](https://upload.wikimedia.org/wikipedia/commons/7/72/YouTube_social_white_square_%282017%29.svg)](https://youtu.be/tWtYoH_Pd_Q) <-- Click!
 ### Prerequisites
 You will find requirements.txt file in projects' root. Main technologies used:
 * Django (Python's framework)
